@@ -1,48 +1,36 @@
 /* CopySet ERP consolidated order actions */
 (function(){
-  function orderById(id){ return window.st && Array.isArray(st.orders) ? st.orders.find(x=>x.id===id) : null; }
-  function persist(){ if(typeof window.save==='function') save(); if(typeof window.renderAll==='function') renderAll(); }
+  function orderById(id){return window.st&&Array.isArray(st.orders)?st.orders.find(x=>x.id===id):null;}
+  function persist(){if(typeof window.save==='function')save();if(typeof window.renderAll==='function')renderAll();}
+  window.copysetDeleteOrder=function(id){const o=orderById(id);if(!o)return;const kind=o.mode==='Tarjous'?'tarjous':'tilaus';if(!confirm('Poistetaanko '+kind+' '+(o.no||'')+'?'))return;st.orders=st.orders.filter(x=>x.id!==id);if(typeof window.save==='function')save();if(typeof window.closeM==='function')closeM();if(typeof window.renderAll==='function')renderAll();};
+  window.copysetSetProductionStep=function(id,step){if(!['Aloitettu','Käynnissä','Valmis'].includes(step))return;const o=orderById(id);if(!o)return;o.productionStep=step;if(typeof window.logEvent==='function')try{logEvent(o,'Tuotanto: '+step);}catch(_e){}persist();openOrder(id);};
 
-  window.copysetDeleteOrder=function(id){
-    const o=orderById(id); if(!o)return;
-    const kind=o.mode==='Tarjous'?'tarjous':'tilaus';
-    if(!confirm('Poistetaanko '+kind+' '+(o.no||'')+'?'))return;
-    st.orders=st.orders.filter(x=>x.id!==id);
-    if(typeof window.logEvent==='function') try{logEvent(o,'Poistettu: '+(o.no||''));}catch(_e){}
-    if(typeof window.save==='function')save(); if(typeof window.closeM==='function')closeM(); if(typeof window.renderAll==='function')renderAll();
-  };
-
-  window.copysetSetProductionStep=function(id,step){
-    const allowed=['Aloitettu','Käynnissä','Valmis']; if(!allowed.includes(step))return;
-    const o=orderById(id); if(!o)return; o.productionStep=step;
-    if(typeof window.logEvent==='function')try{logEvent(o,'Tuotanto: '+step);}catch(_e){} persist(); if(typeof window.openOrder==='function')openOrder(id);
-  };
-
-  function productionWorkCard(o){
-    if(typeof window.normalizeOrder==='function')normalizeOrder(o);
-    const vendor=o.production==='Alihankkija'&&typeof window.V==='function'?(V(o.supplierId)?.name||'Alihankkija'):'Copy-Set';
-    const products=Array.isArray(o.products)&&o.products.length?o.products:[{name:o.product,qty:o.qty,desc:o.description,extras:o.extraLines||[]}];
-    const productRows=products.map((p,i)=>'<tr><td>'+(i+1)+'</td><td><b>'+E(p.name||'Tuote')+'</b>'+(p.desc?'<br><span class="small">'+E(p.desc)+'</span>':'')+'</td><td><b>'+E(p.qty||'—')+' kpl</b></td><td>'+E(vendor)+'</td></tr>').join('');
-    const tasks=products.map((p,i)=>{const extras=Array.isArray(p.extras)?p.extras:[];return '<div class="doc-section"><h3>'+E(p.name||('TUOTE '+(i+1)))+' · TYÖVAIHEET</h3>'+(extras.length?'<div class="doc-checks">'+extras.map(x=>'<span>□ '+E(typeof x==='string'?x:(x.label||x.name||x.desc||'Lisätyö'))+'</span>').join('')+'</div>':'<div class="doc-note">'+E(p.desc||o.description||'Ei erillisiä työvaiheita.')+'</div>')+'</div>';}).join('');
-    const ds=o.deliveries||[];
-    const body='<div class="doc-grid"><div><b>ASIAKAS</b><br>'+E(o.company||'')+'<br>'+E(o.contact||'')+'<br>'+E(o.email||'')+' · '+E(o.phone||'')+'</div><div><b>AIKATAULU</b><br>Tilaus '+E(FI_DATE(o.date)||'—')+'<br>Deadline <strong>'+E(FI_DATE(o.deadline)||'—')+'</strong><br>Toimitus '+E(FI_DATE(o.deliveryDate)||'—')+'</div></div><div class="doc-section"><h3>TYÖN TIEDOT</h3><table class="doc-table"><tr><th>#</th><th>Tuote / ohje</th><th>Määrä</th><th>Tuotanto</th></tr>'+productRows+'</table></div>'+tasks+'<div class="doc-section"><h3>TOIMITUS</h3><p>'+E(o.shipping||'')+'</p>'+(ds.length?ds.map((d,i)=>'<p><b>'+(i+1)+'. '+E(d.recipient||o.company)+'</b><br>'+E(d.address||'')+' · '+E(d.zip||'')+' '+E(d.city||'')+' · '+E(d.country||'Suomi')+(d.info?'<br>'+E(d.info):'')+'</p>').join(''):'<p>Nouto Copy-Setistä.</p>')+'</div><div class="doc-section"><h3>TUOTANNON TARKISTUS</h3><div class="doc-checks"><span>□ Aineisto tarkistettu</span><span>□ Tuotanto valmis</span><span>□ Jälkikäsittely valmis</span><span>□ Pakattu</span></div></div><div class="doc-no-price">TUOTANTOLAPPU · EI HINTATIETOJA</div>';
+  function productsOf(o){return Array.isArray(o.products)&&o.products.length?o.products:[{name:o.product,qty:o.qty,desc:o.description,extras:o.extraLines||[]}];}
+  function workCardHtml(o){if(typeof window.normalizeOrder==='function')normalizeOrder(o);const vendor=o.production==='Alihankkija'&&typeof window.V==='function'?(V(o.supplierId)?.name||'Alihankkija'):'Copy-Set',ps=productsOf(o),ds=o.deliveries||[];
+    const rows=ps.map((p,i)=>'<tr><td>'+(i+1)+'</td><td><b>'+E(p.name||'Tuote')+'</b>'+(p.desc?'<br>'+E(p.desc):'')+'</td><td><b>'+E(p.qty||'—')+' kpl</b></td><td>'+E(vendor)+'</td></tr>').join('');
+    const tasks=ps.map((p,i)=>{const xs=Array.isArray(p.extras)?p.extras:[];return '<div class="doc-section"><h3>'+E(p.name||('TUOTE '+(i+1)))+' · TYÖVAIHEET</h3>'+(xs.length?'<div class="doc-checks">'+xs.map(x=>'<span>□ '+E(typeof x==='string'?x:(x.label||x.name||x.desc||'Lisätyö'))+'</span>').join('')+'</div>':'<div class="doc-note">'+E(p.desc||o.description||'Ei erillisiä työvaiheita.')+'</div>')+'</div>';}).join('');
+    const body='<div class="doc-grid"><div><b>ASIAKAS</b><br>'+E(o.company||'')+'<br>'+E(o.contact||'')+'</div><div><b>AIKATAULU</b><br>Tilaus '+E(FI_DATE(o.date)||'—')+'<br>Deadline <strong>'+E(FI_DATE(o.deadline)||'—')+'</strong><br>Toimitus '+E(FI_DATE(o.deliveryDate)||'—')+'</div></div><div class="doc-section"><h3>TYÖN TIEDOT</h3><table class="doc-table"><tr><th>#</th><th>Tuote / työohje</th><th>Määrä</th><th>Tuotanto</th></tr>'+rows+'</table></div>'+tasks+'<div class="doc-section"><h3>TOIMITUS</h3><p><b>'+E(o.shipping||'')+'</b></p>'+(ds.length?ds.map((d,i)=>'<p><b>'+(i+1)+'. '+E(d.recipient||o.company)+'</b><br>'+E(d.address||'')+' · '+E(d.zip||'')+' '+E(d.city||'')+' · '+E(d.country||'Suomi')+'</p>').join(''):'<p>Nouto Copy-Setistä.</p>')+'</div><div class="doc-section"><h3>TUOTANNON TARKISTUS</h3><div class="doc-checks"><span>□ Aineisto tarkistettu</span><span>□ Tuotanto valmis</span><span>□ Jälkikäsittely valmis</span><span>□ Pakattu</span></div></div><div class="doc-no-price">TUOTANTOLAPPU · EI HINTATIETOJA</div>';
     return typeof window.docShell==='function'?docShell('TUOTANTOLAPPU','Työ #'+o.no,body):body;
   }
-  window.productionDocHtml=productionWorkCard;
-  window.showProductionDoc=function(id){const o=orderById(id);if(!o)return;if(typeof window.showDoc==='function')showDoc(id,'Tuotantolappu · #'+o.no,productionWorkCard(o));};
+  window.productionDocHtml=workCardHtml;
+  window.showProductionDoc=function(id){const o=orderById(id);if(o&&typeof window.showDoc==='function')showDoc(id,'Tuotantolappu · #'+o.no,workCardHtml(o));};
+  window.copysetPrintWorkCard=function(id){const o=orderById(id);if(!o)return;const w=open('');if(!w)return alert('Salli ponnahdusikkuna tulostusta varten.');w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Työkortti '+E(o.no)+'</title><style>body{font-family:Arial;color:#222;margin:24px}.doc-paper{max-width:850px;margin:auto}.doc-head{display:flex;justify-content:space-between}.doc-logo{font-size:28px;font-weight:900}.doc-logo span{color:#ef7f1a}.doc-title{text-align:right;font-size:22px;font-weight:900}.doc-accent{height:5px;background:#ef7f1a;margin:12px 0 22px}.doc-grid{display:grid;grid-template-columns:1fr 1fr;gap:25px}.doc-section{margin-top:22px}.doc-table{width:100%;border-collapse:collapse}.doc-table th,.doc-table td{border:1px solid #ddd;padding:9px;text-align:left}.doc-checks{display:grid;grid-template-columns:1fr 1fr;gap:8px}.doc-note{padding:12px;background:#f5f5f5}.doc-no-price{margin-top:25px;border:2px solid #222;padding:9px;text-align:center;font-weight:900}.doc-foot{margin-top:30px;border-top:1px solid #ddd;padding-top:8px;font-size:11px}</style></head><body>'+workCardHtml(o)+'<script>onload=()=>print()<\/script></body></html>');w.document.close();};
 
-  function decorateOrder(id){
-    const o=orderById(id),body=document.getElementById('mb'); if(!o||!body)return;
-    if(o.status==='Tuotannossa'&&!body.querySelector('#copyset-production-steps')){
-      const cur=o.productionStep||'Aloitettu',card=document.createElement('div'); card.className='card'; card.id='copyset-production-steps';
-      card.innerHTML='<h3>Tuotannon eteneminen</h3><div class="actions">'+['Aloitettu','Käynnissä','Valmis'].map(s=>'<button type="button" class="btn '+(cur===s?'orange':'')+'" data-production-step="'+s+'">'+(cur===s?'✓ ':'')+s+'</button>').join('')+'</div>';
-      card.querySelectorAll('[data-production-step]').forEach(b=>b.onclick=()=>copysetSetProductionStep(id,b.dataset.productionStep)); const wf=body.querySelector('.wf'); if(wf)wf.insertAdjacentElement('afterend',card); else body.prepend(card);
+  /* One clear sales flow: draft -> checked -> sent -> accepted -> confirmed order -> production. */
+  const oldCreateOrderFromQuote=window.createOrderFromQuote;
+  if(typeof oldCreateOrderFromQuote==='function')window.createOrderFromQuote=function(id,withChanges){const q=orderById(id);const before=q&&q.convertedOrderId;const r=oldCreateOrderFromQuote.apply(this,arguments);if(q&&!before&&q.convertedOrderId&&!withChanges){const o=orderById(q.convertedOrderId);if(o){o.mode='Tilaus';o.status='Vahvistettu';o.artworkStatus='Aineisto OK';o.productionStep='Aloitettu';if(typeof window.logEvent==='function')try{logEvent(o,'Asiakkaan hyväksymä tarjous vahvistettu tuotantoa varten');}catch(_e){}persist();setTimeout(()=>openOrder(o.id),0);}}return r;};
+  window.copysetStartProduction=function(id){const o=orderById(id);if(!o)return;o.mode='Tilaus';o.artworkStatus='Aineisto OK';o.status='Tuotannossa';o.productionStep=o.productionStep||'Aloitettu';if(typeof window.logEvent==='function')try{logEvent(o,'Työ siirretty tuotantoon');}catch(_e){}persist();openOrder(id);};
+
+  function decorateOrder(id){const o=orderById(id),body=document.getElementById('mb');if(!o||!body)return;
+    /* Never let a price-bearing confirmation masquerade as the production work card. */
+    body.querySelectorAll('button').forEach(b=>{const t=(b.textContent||'').toLowerCase();if(t.includes('työkortti')||t.includes('tuotantoon')&&t.includes('tulosta')){b.textContent='🖨 Tulosta työkortti (ei hintoja)';b.onclick=()=>copysetPrintWorkCard(id);}});
+    if(o.mode==='Tilaus'&&['Vahvistettu','Tuotannossa','Valmis'].includes(o.status)){
+      const groups=[...body.querySelectorAll('.actions')],a=groups[groups.length-1];if(a&&!a.querySelector('.copyset-workcard')){const b=document.createElement('button');b.type='button';b.className='btn dark copyset-workcard';b.textContent='🖨 Tulosta työkortti (ei hintoja)';b.onclick=()=>copysetPrintWorkCard(id);a.prepend(b);}
     }
-    const actionGroups=[...body.querySelectorAll('.actions')],actions=actionGroups[actionGroups.length-1];
-    if(actions&&!actions.querySelector('.copyset-delete')){const b=document.createElement('button');b.type='button';b.className='btn danger copyset-delete';b.textContent='Poista '+(o.mode==='Tarjous'?'tarjous':'tilaus');b.onclick=()=>copysetDeleteOrder(id);actions.prepend(b);}
-    if(typeof window.copysetEnhancePricing==='function')copysetEnhancePricing();
+    if(o.status==='Vahvistettu'){const groups=[...body.querySelectorAll('.actions')],a=groups[groups.length-1];if(a&&!a.querySelector('.copyset-production-start')){const b=document.createElement('button');b.type='button';b.className='btn orange copyset-production-start';b.textContent='→ Siirrä tuotantoon';b.onclick=()=>copysetStartProduction(id);a.append(b);}}
+    if(o.status==='Tuotannossa'&&!body.querySelector('#copyset-production-steps')){const cur=o.productionStep||'Aloitettu',card=document.createElement('div');card.className='card';card.id='copyset-production-steps';card.innerHTML='<h3>Tuotannon eteneminen</h3><div class="actions">'+['Aloitettu','Käynnissä','Valmis'].map(s=>'<button type="button" class="btn '+(cur===s?'orange':'')+'" data-production-step="'+s+'">'+(cur===s?'✓ ':'')+s+'</button>').join('')+'</div>';card.querySelectorAll('[data-production-step]').forEach(b=>b.onclick=()=>copysetSetProductionStep(id,b.dataset.productionStep));const wf=body.querySelector('.wf');if(wf)wf.insertAdjacentElement('afterend',card);else body.prepend(card);}
+    const groups=[...body.querySelectorAll('.actions')],actions=groups[groups.length-1];if(actions&&!actions.querySelector('.copyset-delete')){const b=document.createElement('button');b.type='button';b.className='btn danger copyset-delete';b.textContent='Poista '+(o.mode==='Tarjous'?'tarjous':'tilaus');b.onclick=()=>copysetDeleteOrder(id);actions.prepend(b);}if(typeof window.copysetEnhancePricing==='function')copysetEnhancePricing();
   }
-
-  const baseOpenOrder=window.openOrder;if(typeof baseOpenOrder==='function')window.openOrder=function(id){const result=baseOpenOrder.apply(this,arguments);queueMicrotask(()=>decorateOrder(id));return result;};
-  const baseOpenQuoteWork=window.openQuoteWork;if(typeof baseOpenQuoteWork==='function')window.openQuoteWork=function(id){const result=baseOpenQuoteWork.apply(this,arguments);queueMicrotask(()=>decorateOrder(id));return result;};
+  const baseOpenOrder=window.openOrder;if(typeof baseOpenOrder==='function')window.openOrder=function(id){const r=baseOpenOrder.apply(this,arguments);queueMicrotask(()=>decorateOrder(id));return r;};
+  const baseOpenQuoteWork=window.openQuoteWork;if(typeof baseOpenQuoteWork==='function')window.openQuoteWork=function(id){const r=baseOpenQuoteWork.apply(this,arguments);return r;};
 })();
