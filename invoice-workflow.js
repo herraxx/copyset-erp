@@ -1,0 +1,14 @@
+/* CopySet ERP — complete invoice workflow: Valmis -> Laskun tarkastus -> Laskutettu */
+(function(){
+ const state=()=>{try{return typeof st!=='undefined'?st:window.st}catch(_e){return window.st}};
+ const get=id=>state()?.orders?.find(o=>String(o.id)===String(id));
+ function persist(){if(typeof save==='function')save();if(typeof renderAll==='function')renderAll()}
+ function review(id){const o=get(id);if(!o)return false;if(o.status==='Valmis'){o.status='Laskutusvalmis';o.invoiceStatus='Tarkastettavana';o.invoiceCreatedAt=o.invoiceCreatedAt||new Date().toISOString();if(typeof logEvent==='function')try{logEvent(o,'Lasku luotu tarkastettavaksi')}catch(_e){};persist()}if(typeof window.copysetOpenInvoiceReview==='function'){window.copysetOpenInvoiceReview(id);return true}return false}
+ function approve(id){const o=get(id);if(!o)return;o.status='Laskutettu';o.invoiceStatus='Hyväksytty';o.invoiceApprovedAt=new Date().toISOString();o.invoicedAt=o.invoicedAt||new Date().toISOString();if(typeof logEvent==='function')try{logEvent(o,'Lasku hyväksytty ja laskutettu')}catch(_e){};persist();document.getElementById('copyset-invoice-review')?.remove();window.copysetOpenOrderPage?.(id)}
+ window.copysetMoveToInvoiceReview=review;window.copysetApproveInvoice=approve;
+ /* Make invoice review approval use this authoritative workflow. */
+ document.addEventListener('click',function(e){const b=e.target.closest&&e.target.closest('#irApprove');if(!b)return;const panel=document.getElementById('copyset-invoice-review');if(!panel)return;const title=panel.querySelector('h1')?.textContent||'';const no=title.split('·')[0].trim();const o=state()?.orders?.find(x=>String(x.no||'')===no);if(!o)return;e.preventDefault();e.stopImmediatePropagation();approve(o.id)},true);
+ /* Add a visible invoice queue under Laskutusvalmis in the order list when that filter is selected. */
+ function decorate(){const s=state();if(!s?.orders)return;document.querySelectorAll('tr').forEach(tr=>{const txt=(tr.textContent||'');if(!txt.includes('Laskutusvalmis'))return;const o=s.orders.find(x=>txt.includes(String(x.no||'')));if(!o)return;const last=tr.querySelector('td:last-child');if(!last||last.querySelector('.invoice-review-direct'))return;const b=document.createElement('button');b.className='btn orange invoice-review-direct';b.textContent='Tarkista lasku';b.style.marginLeft='6px';b.onclick=function(ev){ev.preventDefault();ev.stopPropagation();review(o.id)};last.appendChild(b)})}
+ new MutationObserver(()=>queueMicrotask(decorate)).observe(document.documentElement,{childList:true,subtree:true});setTimeout(decorate,0);
+})();
