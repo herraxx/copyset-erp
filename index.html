@@ -8,14 +8,13 @@
 <body>
 <script>
 (function(){
-  const version='20260916-clean22';
+  const version='20260916-clean23';
   const styles=['styles/base.css','styles/documents.css','approved-layout.css','order-page.css'];
-  const scripts=['config.js','app-core.js','quotes-list.js','orders-list.js','pricing.js','core-actions.js','invoice-review.js','order-page.js','numbering-fix.js'];
+  const scripts=['config.js','app-core.js','customers.js','quotes-list.js','orders-list.js','pricing.js','core-actions.js','invoice-review.js','order-page.js','numbering-fix.js'];
 
-  const tag=(name,attrs)=>`<${name} ${Object.entries(attrs).map(([key,value])=>`${key}="${value}"`).join(' ')}></${name}>`;
   const assets=styles.map(path=>`<link rel="stylesheet" href="/${path}?v=${version}">`).join('')+
     scripts.map(path=>`<script src="/${path}?v=${version}"><\/script>`).join('')+
-    tag('script',{}).replace('</script>',`if(window.CopySet){if(CopySet.renderQuotes){window.renderQuotes=CopySet.renderQuotes;CopySet.renderQuotes()}if(CopySet.renderOrders){window.renderOrders=CopySet.renderOrders;CopySet.renderOrders()}}</script>`);
+    '<script>if(window.CopySet){if(CopySet.renderQuotes){window.renderQuotes=CopySet.renderQuotes;CopySet.renderQuotes()}if(CopySet.renderOrders){window.renderOrders=CopySet.renderOrders;CopySet.renderOrders()}}<\/script>';
 
   fetch(`/app-base.html?v=${version}`)
     .then(response=>{if(!response.ok)throw new Error(`app-base ${response.status}`);return response.text()})
