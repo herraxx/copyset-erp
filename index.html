@@ -1,1 +1,35 @@
-<!doctype html><meta charset="utf-8"><title>CopySet ERP</title><script>fetch('/app-base.html?v=20260916-clean21').then(r=>{if(!r.ok)throw Error('app-base '+r.status);return r.text()}).then(t=>{const addon='<link rel="stylesheet" href="/styles/base.css?v=20260916-clean21"><link rel="stylesheet" href="/styles/documents.css?v=20260916-clean21"><link rel="stylesheet" href="/approved-layout.css?v=20260916-clean21"><link rel="stylesheet" href="/order-page.css?v=20260916-clean21"><script src="/config.js?v=20260916-clean21"><\/script><script src="/app-core.js?v=20260916-clean21"><\/script><script src="/quotes-list.js?v=20260916-clean21"><\/script><script src="/orders-list.js?v=20260916-clean21"><\/script><script src="/pricing.js?v=20260916-clean21"><\/script><script src="/core-actions.js?v=20260916-clean21"><\/script><script src="/invoice-review.js?v=20260916-clean21"><\/script><script src="/order-page.js?v=20260916-clean21"><\/script><script src="/numbering-fix.js?v=20260916-clean21"><\/script><script>if(window.CopySet){if(CopySet.renderQuotes){window.renderQuotes=CopySet.renderQuotes;CopySet.renderQuotes()}if(CopySet.renderOrders){window.renderOrders=CopySet.renderOrders;CopySet.renderOrders()}}<\/script>';const p=t.toLowerCase().lastIndexOf('</body>');if(p>=0)t=t.slice(0,p)+addon+t.slice(p);else t+=addon;document.open();document.write(t);document.close()}).catch(e=>{document.body.innerHTML='<div style="font-family:Arial;padding:30px">CopySet ERP loading error: '+e.message+'</div>'})</script>
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>CopySet ERP</title>
+</head>
+<body>
+<script>
+(function(){
+  const version='20260916-clean22';
+  const styles=['styles/base.css','styles/documents.css','approved-layout.css','order-page.css'];
+  const scripts=['config.js','app-core.js','quotes-list.js','orders-list.js','pricing.js','core-actions.js','invoice-review.js','order-page.js','numbering-fix.js'];
+
+  const tag=(name,attrs)=>`<${name} ${Object.entries(attrs).map(([key,value])=>`${key}="${value}"`).join(' ')}></${name}>`;
+  const assets=styles.map(path=>`<link rel="stylesheet" href="/${path}?v=${version}">`).join('')+
+    scripts.map(path=>`<script src="/${path}?v=${version}"><\/script>`).join('')+
+    tag('script',{}).replace('</script>',`if(window.CopySet){if(CopySet.renderQuotes){window.renderQuotes=CopySet.renderQuotes;CopySet.renderQuotes()}if(CopySet.renderOrders){window.renderOrders=CopySet.renderOrders;CopySet.renderOrders()}}</script>`);
+
+  fetch(`/app-base.html?v=${version}`)
+    .then(response=>{if(!response.ok)throw new Error(`app-base ${response.status}`);return response.text()})
+    .then(html=>{
+      const bodyEnd=html.toLowerCase().lastIndexOf('</body>');
+      const page=bodyEnd>=0?html.slice(0,bodyEnd)+assets+html.slice(bodyEnd):html+assets;
+      document.open();
+      document.write(page);
+      document.close();
+    })
+    .catch(error=>{
+      document.body.innerHTML=`<div style="font-family:Arial;padding:30px">CopySet ERP loading error: ${error.message}</div>`;
+    });
+})();
+</script>
+</body>
+</html>
