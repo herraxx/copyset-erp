@@ -4,6 +4,7 @@
   let activeRow=null;
   const money=n=>root.formatMoney?root.formatMoney(n):(Number(n)||0).toLocaleString('fi-FI',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
   const rows=()=>[...document.querySelectorAll('#v2products .v2-product')];
+  const presets=()=>{try{return typeof P!=='undefined'&&Array.isArray(P)?P:(Array.isArray(window.P)?window.P:[])}catch(_e){return Array.isArray(window.P)?window.P:[]}};
 
   function ensureStyle(){
     if(document.getElementById('copysetPricingStyle'))return;
@@ -34,7 +35,7 @@
     const name=r.querySelector('.v2p-name')?.value||'Oma tuote';
     const qty=+r.querySelector('.v2p-qty')?.value||100;
     const price=+r.querySelector('.v2p-price')?.value||0;
-    const preset=(window.P||[]).find(x=>x[0]===name)||[name,.10,root.config?.setupFee||50];
+    const preset=presets().find(x=>x[0]===name)||[name,.10,root.config?.setupFee||50];
     const modal=ensureModal(),body=modal.querySelector('#pricingBody');
     body.innerHTML=`<div class="pricing-grid"><label>Määrä<input id="pq" type="number" value="${qty}"></label><label>Yksikkökustannus €<input id="pu" type="number" step=".001" value="${+preset[1]||0}"></label><label>Tuotannon kiinteä kustannus €<input id="ps" type="number" step=".01" value="${+preset[2]||0}"></label><label>Hukka %<input id="pw" type="number" step=".1" value="5"></label><label>Lisätyöt €<input id="pe" type="number" step=".01" value="0"></label><label>Katekerroin<input id="pm" type="number" step=".01" value="1.55"></label></div><label>Huomio<textarea id="pn" placeholder="Aineistotyö, viimeistely, kiirelisä..."></textarea></label><div class="pricing-result"><small>Tuotteen myyntihinta ALV 0 %</small><strong id="pt">${money(price)}</strong><div id="pd"></div><small>Aloituskustannus ${money(root.config?.setupFee||50)} lisätään tilaukselle erillisenä rivinä.</small></div><button type="button" class="pricing-use" id="pricingUse">✓ Käytä hinta tuotteelle</button>`;
     function calc(){const q=+body.querySelector('#pq').value||1,u=+body.querySelector('#pu').value||0,s=+body.querySelector('#ps').value||0,w=+body.querySelector('#pw').value||0,e=+body.querySelector('#pe').value||0,m=+body.querySelector('#pm').value||1,cost=s+q*u*(1+w/100)+e,total=cost*m;body.querySelector('#pt').textContent=money(total);body.querySelector('#pd').innerHTML=`Kustannus <b>${money(cost)}</b> · Kate <b>${money(total-cost)}</b> · ${money(total/q)}/kpl`;return{q,total,note:body.querySelector('#pn').value}}
