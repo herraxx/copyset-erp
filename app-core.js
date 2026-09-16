@@ -5,10 +5,22 @@
   root.state=legacyState;
   root.getOrder=id=>legacyState()?.orders?.find(o=>String(o.id)===String(id))||null;
   root.orders=()=>legacyState()?.orders||[];
+  root.customers=()=>legacyState()?.customers||[];
   root.save=function(){try{if(typeof save==='function')return save()}catch(e){console.error('CopySet save failed',e)}};
   root.render=function(){try{if(typeof renderAll==='function')return renderAll()}catch(e){console.error('CopySet render failed',e)}};
   root.persist=function(){root.save();root.render()};
-  root.statuses=['Vahvistettu','Tuotannossa','Valmis','Laskutusvalmis','Laskutettu'];
-  root.setStatus=function(id,status,eventText){const o=root.getOrder(id);if(!o||!root.statuses.includes(status))return false;o.status=status;if(status==='Tuotannossa'&&!o.productionStep)o.productionStep='Aloitettu';if(status==='Valmis')o.productionStep='Valmis';if(status==='Laskutusvalmis'){o.invoiceStatus='Tarkastettavana';o.invoiceCreatedAt=o.invoiceCreatedAt||new Date().toISOString()}if(status==='Laskutettu'){o.invoiceStatus='Hyväksytty';o.invoiceApprovedAt=o.invoiceApprovedAt||new Date().toISOString();o.invoicedAt=o.invoicedAt||new Date().toISOString()}if(eventText&&typeof logEvent==='function')try{logEvent(o,eventText)}catch(_e){}root.persist();return o};
+  root.statuses=(root.config?.orderStatuses||['Vahvistettu','Tuotannossa','Valmis','Laskutusvalmis','Laskutettu']).slice();
+  root.setStatus=function(id,status,eventText){
+    const o=root.getOrder(id);
+    if(!o||!root.statuses.includes(status))return false;
+    o.status=status;
+    if(status==='Tuotannossa'&&!o.productionStep)o.productionStep=root.config?.productionSteps?.[0]||'Aloitettu';
+    if(status==='Valmis')o.productionStep=root.config?.productionSteps?.[2]||'Valmis';
+    if(status==='Laskutusvalmis'){o.invoiceStatus='Tarkastettavana';o.invoiceCreatedAt=o.invoiceCreatedAt||new Date().toISOString()}
+    if(status==='Laskutettu'){o.invoiceStatus='Hyväksytty';o.invoiceApprovedAt=o.invoiceApprovedAt||new Date().toISOString();o.invoicedAt=o.invoicedAt||new Date().toISOString()}
+    if(eventText&&typeof logEvent==='function')try{logEvent(o,eventText)}catch(_e){}
+    root.persist();
+    return o;
+  };
   root.nextStatus=function(status){const i=root.statuses.indexOf(status);return i>=0&&i<root.statuses.length-1?root.statuses[i+1]:null};
 })();
