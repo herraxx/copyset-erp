@@ -1,30 +1,39 @@
 /* CopySet ERP — canonical Tilaukset list */
 (function(){
   const root=window.CopySet=window.CopySet||{};
-  const legacy=()=>({
-    filter:()=>{try{return typeof v2OrderFilter!=='undefined'?v2OrderFilter:'Kaikki'}catch(_e){return'Kaikki'}},
-    setFilter:value=>{try{v2OrderFilter=value}catch(_e){window.v2OrderFilter=value}},
-    query:()=>{try{return typeof q!=='undefined'?q:''}catch(_e){return window.q||''}},
-    setQuery:value=>{try{q=value}catch(_e){window.q=value}}
-  });
+  const ui={filter:'Kaikki',query:''};
+  const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const products=o=>Array.isArray(o.products)&&o.products.length?o.products:[{name:o.product||'Tuote',qty:o.qty||0}];
+  const statusClass=status=>String(status||'').toLowerCase().replace(/[^a-z0-9åäö]+/gi,'-');
+  const late=o=>{if(!o.deadline||['Valmis','Laskutusvalmis','Laskutettu'].includes(o.status))return false;const match=String(o.deadline).match(/^(\d{4})-(\d{2})-(\d{2})/);if(!match)return false;const deadline=new Date(Number(match[1]),Number(match[2])-1,Number(match[3]),23,59,59);return deadline.getTime()<Date.now()};
+  const matches=(o,filter)=>filter==='Kaikki'||(filter==='Myöhässä'?late(o):o.status===filter);
+  const nextLabel=o=>({Vahvistettu:'Aloita tuotanto',Tuotannossa:'Kuittaa valmiiksi',Valmis:'Laskun tarkastus',Laskutusvalmis:'Tarkista lasku'}[o.status]||'Avaa');
+
+  function advance(id){
+    const o=root.getOrder?.(id);if(!o)return false;
+    if(o.status==='Vahvistettu')return root.actions?.startProduction?.(id);
+    if(o.status==='Tuotannossa')return root.orderPage?.markReady?.(id);
+    if(o.status==='Valmis'||o.status==='Laskutusvalmis')return root.invoiceReview?.move?.(id);
+    return root.orderPage?.open?.(id);
+  }
 
   function render(){
     const host=document.getElementById('orders');
     const state=root.state?.();
     if(!host||!state)return;
-    const bridge=legacy(),filter=bridge.filter(),query=bridge.query();
-    const all=(state.orders||[]).filter(o=>(o.mode||'Tilaus')!=='Tarjous').map(v2EnsureProducts);
-    let visible=all.filter(o=>v2OrderMatch(o,filter)).sort((a,b)=>(a.deadline||'9999').localeCompare(b.deadline||'9999'));
-    if(query){const z=query.toLowerCase();visible=visible.filter(o=>JSON.stringify(o).toLowerCase().includes(z))}
+    const all=(state.orders||[]).filter(o=>(o.mode||'Tilaus')!=='Tarjous').map(o=>({...o,products:products(o)}));
+    let visible=all.filter(o=>matches(o,ui.filter)).sort((a,b)=>String(a.deadline||'9999').localeCompare(String(b.deadline||'9999')));
+    if(ui.query){const z=ui.query.toLocaleLowerCase('fi-FI');visible=visible.filter(o=>[o.no,o.company,...o.products.flatMap(p=>[p.name,p.qty])].some(v=>String(v??'').toLocaleLowerCase('fi-FI').includes(z)))}
     const filters=['Kaikki','Vahvistettu','Tuotannossa','Valmis','Laskutusvalmis','Laskutettu','Myöhässä'];
-    const count=f=>all.filter(o=>v2OrderMatch(o,f)).length;
-    const row=o=>`<tr data-order-id="${E(o.id)}" style="cursor:pointer"><td><b>${E(o.no)}</b></td><td><b>${E(root.formatDate?root.formatDate(o.deadline):FI_DATE(o.deadline))}</b>${v2OrderLate(o)?'<div class="small" style="color:#b42318;font-weight:800">MYÖHÄSSÄ</div>':''}</td><td>${E(o.company)}</td><td>${o.products.map(p=>`${E(p.name)} · ${E(p.qty)}`).join('<br>')}</td><td><span class="badge ${statusClass(o.status)}">${E(o.status)}</span></td><td>${o.status==='Laskutettu'?'<span class="small">✓ Valmis</span>':o.status==='Vahvistettu'?`<button class="btn orange" data-action="start-production" data-id="${E(o.id)}">Aloita tuotanto →</button>`:`<button class="btn orange" data-action="advance" data-id="${E(o.id)}">${E(v2NextLabel(o))} →</button>`}</td></tr>`;
-    host.innerHTML=`<div class="list-shell"><div class="list-tools"><input id="search" placeholder="Hae tilausnumero, asiakas tai tuote" value="${E(query)}"><div class="list-filters">${filters.map(f=>`<button class="list-filter ${filter===f?'on':''} ${f==='Myöhässä'?'late':''}" data-order-filter="${E(f)}">${f==='Myöhässä'?'⚠ ':''}${E(f)}<span class="count">${count(f)}</span></button>`).join('')}</div></div><div class="tablewrap"><table><thead><tr><th>Tilaus</th><th>Deadline</th><th>Asiakas</th><th>Tuotteet</th><th>Status</th><th>Seuraava vaihe</th></tr></thead><tbody>${visible.length?visible.map(row).join(''):'<tr><td colspan="6"><div class="order-empty">Ei tilauksia tällä rajauksella.</div></td></tr>'}</tbody></table></div></div>`;
-    host.querySelectorAll('[data-order-filter]').forEach(button=>button.addEventListener('click',()=>{bridge.setFilter(button.dataset.orderFilter);render()}));
-    host.querySelectorAll('[data-order-id]').forEach(tr=>tr.addEventListener('click',()=>openOrder(tr.dataset.orderId)));
-    host.querySelectorAll('[data-action]').forEach(button=>button.addEventListener('click',event=>{event.stopPropagation();const id=button.dataset.id;if(button.dataset.action==='start-production')copysetStartProduction(id);else if(button.dataset.action==='advance')v2Advance(id)}));
+    const count=f=>all.filter(o=>matches(o,f)).length;
+    const row=o=>`<tr data-order-id="${esc(o.id)}" style="cursor:pointer"><td><b>${esc(o.no)}</b></td><td><b>${esc(root.formatDate?root.formatDate(o.deadline):o.deadline)}</b>${late(o)?'<div class="small" style="color:#b42318;font-weight:800">MYÖHÄSSÄ</div>':''}</td><td>${esc(o.company)}</td><td>${o.products.map(p=>`${esc(p.name)} · ${esc(p.qty)}`).join('<br>')}</td><td><span class="badge ${statusClass(o.status)}">${esc(o.status)}</span></td><td>${o.status==='Laskutettu'?'<span class="small">✓ Valmis</span>':`<button class="btn orange" data-action="advance" data-id="${esc(o.id)}">${esc(nextLabel(o))} →</button>`}</td></tr>`;
+    host.innerHTML=`<div class="list-shell"><div class="list-tools"><input id="search" placeholder="Hae tilausnumero, asiakas tai tuote" value="${esc(ui.query)}"><div class="list-filters">${filters.map(f=>`<button class="list-filter ${ui.filter===f?'on':''} ${f==='Myöhässä'?'late':''}" data-order-filter="${esc(f)}">${f==='Myöhässä'?'⚠ ':''}${esc(f)}<span class="count">${count(f)}</span></button>`).join('')}</div></div><div class="tablewrap"><table><thead><tr><th>Tilaus</th><th>Deadline</th><th>Asiakas</th><th>Tuotteet</th><th>Status</th><th>Seuraava vaihe</th></tr></thead><tbody>${visible.length?visible.map(row).join(''):'<tr><td colspan="6"><div class="order-empty">Ei tilauksia tällä rajauksella.</div></td></tr>'}</tbody></table></div></div>`;
+    host.querySelectorAll('[data-order-filter]').forEach(button=>button.addEventListener('click',()=>{ui.filter=button.dataset.orderFilter;render()}));
+    host.querySelectorAll('[data-order-id]').forEach(tr=>tr.addEventListener('click',()=>root.orderPage?.open?.(tr.dataset.orderId)));
+    host.querySelectorAll('[data-action="advance"]').forEach(button=>button.addEventListener('click',event=>{event.stopPropagation();advance(button.dataset.id)}));
     const input=host.querySelector('#search');
-    if(input)input.addEventListener('input',event=>{bridge.setQuery(event.target.value);render();const next=host.querySelector('#search');if(next){next.focus();next.setSelectionRange(next.value.length,next.value.length)}});
+    if(input)input.addEventListener('input',event=>{ui.query=event.target.value;render();const next=host.querySelector('#search');if(next){next.focus();next.setSelectionRange(next.value.length,next.value.length)}});
   }
+  root.ordersUi=ui;
   root.renderOrders=render;
 })();
