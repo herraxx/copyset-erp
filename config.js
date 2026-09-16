@@ -18,21 +18,29 @@
 
   const moneyFormatter=new Intl.NumberFormat(config.locale,{style:'currency',currency:config.currency});
   const domesticCountries=new Set(['suomi','finland','fi']);
-  const isoDate=/^(\d{4})-(\d{2})-(\d{2})$/;
+  const isoDate=/^(\d{4})-(\d{2})-(\d{2})(?:[T\s].*)?$/;
+  const finnishDate=/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/;
+  const pad=value=>String(value).padStart(2,'0');
 
   root.formatDate=function(value){
     if(value===null||value===undefined||value==='')return'';
     const text=String(value).trim();
-    const iso=text.match(isoDate);
-    if(iso)return `${iso[3]}.${iso[2]}.${iso[1]}`;
-    const date=value instanceof Date?value:new Date(value);
-    return Number.isNaN(date.getTime())?text:date.toLocaleDateString(config.locale);
+    let match=text.match(isoDate);
+    if(match)return `${match[3]}.${match[2]}.${match[1]}`;
+    match=text.match(finnishDate);
+    if(match)return `${pad(match[1])}.${pad(match[2])}.${match[3]}`;
+    if(value instanceof Date&&!Number.isNaN(value.getTime()))return `${pad(value.getDate())}.${pad(value.getMonth()+1)}.${value.getFullYear()}`;
+    return text;
   };
 
-  root.formatMoney=function(value){
-    const number=typeof value==='number'?value:Number(String(value??'').replace(',','.'));
-    return moneyFormatter.format(Number.isFinite(number)?number:0);
+  root.parseNumber=function(value,fallback=0){
+    if(typeof value==='number')return Number.isFinite(value)?value:fallback;
+    const normalized=String(value??'').trim().replace(/\s/g,'').replace(',','.');
+    const number=Number(normalized);
+    return Number.isFinite(number)?number:fallback;
   };
+
+  root.formatMoney=function(value){return moneyFormatter.format(root.parseNumber(value,0))};
 
   root.vatForCountry=function(country){
     const normalized=String(country||config.domesticCountry).trim().toLowerCase();
