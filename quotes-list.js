@@ -1,25 +1,28 @@
 /* CopySet ERP — canonical Tarjoukset list */
 (function(){
   const root=window.CopySet=window.CopySet||{};
-  const bridge={
-    filter:()=>{try{return typeof quoteFilter!=='undefined'?quoteFilter:'Kaikki'}catch(_e){return'Kaikki'}},
-    setFilter:value=>{try{quoteFilter=value}catch(_e){window.quoteFilter=value}},
-    query:()=>{try{return typeof quoteSearch!=='undefined'?quoteSearch:''}catch(_e){return window.quoteSearch||''}},
-    setQuery:value=>{try{quoteSearch=value}catch(_e){window.quoteSearch=value}}
-  };
+  const ui={filter:'Kaikki',query:''};
+  const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const number=value=>root.parseNumber?root.parseNumber(value,0):(Number(value)||0);
+  const money=value=>root.formatMoney?root.formatMoney(value):number(value).toLocaleString('fi-FI',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+  const products=o=>Array.isArray(o.products)&&o.products.length?o.products:[{name:o.product||'Tuote',qty:o.qty||0,price:o.price||0}];
+  const stage=o=>o.quoteStage||o.offerStatus||o.status||'Luonnos';
+  const stageClass=value=>String(value||'').toLocaleLowerCase('fi-FI').replace(/[^a-z0-9åäö]+/gi,'-');
+  function net(o){return products(o).reduce((sum,p)=>sum+number(p.price),0)+number(o.setupFee)+number(o.billingFee)+number(o.deliveryFee)}
 
-  function actions(o,stage){
-    const id=E(o.id),buttons=[`<button class="btn" data-action="open" data-id="${id}">Avaa</button>`];
-    if(stage==='Luonnos')buttons.push(`<button class="btn dark" data-action="preflight" data-id="${id}">Tarkista</button>`);
-    if(stage==='Valmis lähetettäväksi')buttons.push(`<button class="btn dark" data-action="send" data-id="${id}">Lähetä</button>`);
-    if(stage==='Lähetetty')buttons.push(`<button class="btn orange" data-action="accept" data-id="${id}">Asiakas hyväksyi</button>`);
-    if(!['Hyväksytty','Hylätty'].includes(stage))buttons.push(`<button class="btn" data-action="reject" data-id="${id}">Hylkää</button>`);
-    if(stage==='Hyväksytty'&&o.convertedOrderId)buttons.push(`<button class="btn orange" data-action="order" data-id="${E(o.convertedOrderId)}">Avaa tilaus</button>`);
+  function actions(o,current){
+    const id=esc(o.id),buttons=[`<button class="btn" data-action="open" data-id="${id}">Avaa</button>`];
+    if(current==='Luonnos')buttons.push(`<button class="btn dark" data-action="preflight" data-id="${id}">Tarkista</button>`);
+    if(current==='Valmis lähetettäväksi')buttons.push(`<button class="btn dark" data-action="send" data-id="${id}">Lähetä</button>`);
+    if(current==='Lähetetty')buttons.push(`<button class="btn orange" data-action="accept" data-id="${id}">Asiakas hyväksyi</button>`);
+    if(!['Hyväksytty','Hylätty'].includes(current))buttons.push(`<button class="btn" data-action="reject" data-id="${id}">Hylkää</button>`);
+    if(current==='Hyväksytty'&&o.convertedOrderId)buttons.push(`<button class="btn orange" data-action="order" data-id="${esc(o.convertedOrderId)}">Avaa tilaus</button>`);
     return buttons.join('');
   }
 
   function runAction(action,id){
-    const handlers={open:openQuoteWork,preflight:showPreflight,send:showQuote,accept:quoteAcceptMenu,reject:rejectQuote,order:openOrder};
+    if(action==='order')return root.orderPage?.open?.(id);
+    const handlers={open:window.openQuoteWork,preflight:window.showPreflight,send:window.showQuote,accept:window.quoteAcceptMenu,reject:window.rejectQuote};
     const handler=handlers[action];
     if(typeof handler==='function')handler(id);
   }
@@ -28,20 +31,20 @@
     const host=document.getElementById('quotes');
     const state=root.state?.();
     if(!host||!state)return;
-    const filter=bridge.filter(),query=bridge.query();
     const all=(state.orders||[]).filter(o=>o.mode==='Tarjous');
     let visible=all.slice();
-    if(filter!=='Kaikki')visible=visible.filter(o=>quoteStage(o)===filter);
-    if(query.trim()){const z=query.toLowerCase();visible=visible.filter(o=>JSON.stringify(o).toLowerCase().includes(z))}
-    visible.sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+    if(ui.filter!=='Kaikki')visible=visible.filter(o=>stage(o)===ui.filter);
+    if(ui.query.trim()){const z=ui.query.toLocaleLowerCase('fi-FI');visible=visible.filter(o=>[o.no,o.company,o.salesperson,o.reference,...products(o).flatMap(p=>[p.name,p.qty])].some(v=>String(v??'').toLocaleLowerCase('fi-FI').includes(z)))}
+    visible.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
     const filters=['Kaikki','Luonnos','Valmis lähetettäväksi','Lähetetty','Hyväksytty','Hylätty'];
-    const count=f=>f==='Kaikki'?all.length:all.filter(o=>quoteStage(o)===f).length;
-    const row=o=>{const stage=quoteStage(o);return `<tr><td><b>${E(o.no)}</b>${o.demo?'<span class="badge demo">DEMO</span>':''}</td><td>${E(root.formatDate?root.formatDate(o.date):FI_DATE(o.date))}</td><td>${E(o.company)}</td><td>${E(o.product)} · ${E(o.qty)} kpl</td><td>${EU(invoiceTotals(normalizeOrder(o)).net)}</td><td><span class="quote-stage ${quoteStageClass(stage)}">${E(stage)}</span></td><td>${E(o.salesperson||'Copy-Set')}</td><td><div class="quote-actions">${actions(o,stage)}</div></td></tr>`};
-    host.innerHTML=`<div class="list-shell"><div class="list-tools"><input id="quoteSearch" placeholder="Hae tarjousnumero, asiakas, tuote tai viite" value="${E(query)}"><div class="list-filters">${filters.map(f=>`<button class="list-filter ${filter===f?'on':''}" data-quote-filter="${E(f)}">${E(f)}<span class="count">${count(f)}</span></button>`).join('')}</div></div><div class="list-note">Tarjoukset käsitellään täällä. Hyväksytystä tarjouksesta luodaan tilaus.</div><div class="tablewrap"><table><thead><tr><th>Tarjous #</th><th>Päivä</th><th>Asiakas</th><th>Tuote</th><th>Summa alv 0</th><th>Tila</th><th>Myyjä</th><th></th></tr></thead><tbody>${visible.length?visible.map(row).join(''):'<tr><td colspan="8"><div class="order-empty">Ei tarjouksia tällä rajauksella.</div></td></tr>'}</tbody></table></div></div>`;
-    host.querySelectorAll('[data-quote-filter]').forEach(button=>button.addEventListener('click',()=>{bridge.setFilter(button.dataset.quoteFilter);render()}));
+    const count=f=>f==='Kaikki'?all.length:all.filter(o=>stage(o)===f).length;
+    const row=o=>{const current=stage(o),ps=products(o);return `<tr><td><b>${esc(o.no)}</b>${o.demo?'<span class="badge demo">DEMO</span>':''}</td><td>${esc(root.formatDate?root.formatDate(o.date):o.date)}</td><td>${esc(o.company)}</td><td>${ps.map(p=>`${esc(p.name)} · ${esc(p.qty)} kpl`).join('<br>')}</td><td>${money(net(o))}</td><td><span class="quote-stage ${stageClass(current)}">${esc(current)}</span></td><td>${esc(o.salesperson||'Copy-Set')}</td><td><div class="quote-actions">${actions(o,current)}</div></td></tr>`};
+    host.innerHTML=`<div class="list-shell"><div class="list-tools"><input id="quoteSearch" placeholder="Hae tarjousnumero, asiakas, tuote tai viite" value="${esc(ui.query)}"><div class="list-filters">${filters.map(f=>`<button class="list-filter ${ui.filter===f?'on':''}" data-quote-filter="${esc(f)}">${esc(f)}<span class="count">${count(f)}</span></button>`).join('')}</div></div><div class="list-note">Tarjoukset käsitellään täällä. Hyväksytystä tarjouksesta luodaan tilaus.</div><div class="tablewrap"><table><thead><tr><th>Tarjous #</th><th>Päivä</th><th>Asiakas</th><th>Tuote</th><th>Summa alv 0</th><th>Tila</th><th>Myyjä</th><th></th></tr></thead><tbody>${visible.length?visible.map(row).join(''):'<tr><td colspan="8"><div class="order-empty">Ei tarjouksia tällä rajauksella.</div></td></tr>'}</tbody></table></div></div>`;
+    host.querySelectorAll('[data-quote-filter]').forEach(button=>button.addEventListener('click',()=>{ui.filter=button.dataset.quoteFilter;render()}));
     host.querySelectorAll('[data-action]').forEach(button=>button.addEventListener('click',()=>runAction(button.dataset.action,button.dataset.id)));
     const input=host.querySelector('#quoteSearch');
-    if(input)input.addEventListener('input',event=>{bridge.setQuery(event.target.value);render();const next=host.querySelector('#quoteSearch');if(next){next.focus();next.setSelectionRange(next.value.length,next.value.length)}});
+    if(input)input.addEventListener('input',event=>{ui.query=event.target.value;render();const next=host.querySelector('#quoteSearch');if(next){next.focus();next.setSelectionRange(next.value.length,next.value.length)}});
   }
+  root.quotesUi=ui;
   root.renderQuotes=render;
 })();
