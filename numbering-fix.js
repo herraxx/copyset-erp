@@ -1,24 +1,38 @@
-/* CopySet ERP — canonical TAR/TIL numbering and one-time migration of legacy numeric demo numbers */
+/* CopySet ERP — canonical TAR/TIL numbering and legacy-number migration */
 (function(){
- const state=()=>{try{return typeof st!=='undefined'?st:window.st}catch(_e){return window.st}};
- const yearOf=o=>{const raw=o?.date||o?.createdAt||o?.orderDate||'';const m=String(raw).match(/(20\d{2})/);return m?m[1]:String(new Date().getFullYear())};
- const canonical=(mode,year,n)=>`${mode==='Tarjous'?'TAR':'TIL'}-${year}-${String(n).padStart(4,'0')}`;
- function migrate(){
-   const s=state();if(!s||!Array.isArray(s.orders))return false;
-   let changed=false;
-   ['Tarjous','Tilaus'].forEach(mode=>{
-     const rows=s.orders.filter(o=>o.mode===mode);
-     const used={};
-     rows.forEach(o=>{const m=String(o.no||'').match(new RegExp(`^${mode==='Tarjous'?'TAR':'TIL'}-(20\\d{2})-(\\d+)$`,'i'));if(m){used[m[1]]=used[m[1]]||new Set();used[m[1]].add(+m[2])}});
-     rows.sort((a,b)=>String(a.date||a.createdAt||'').localeCompare(String(b.date||b.createdAt||''))||String(a.id).localeCompare(String(b.id))).forEach(o=>{
-       if(new RegExp(`^${mode==='Tarjous'?'TAR':'TIL'}-20\\d{2}-\\d{4}$`,'i').test(String(o.no||'')))return;
-       const y=yearOf(o);used[y]=used[y]||new Set();let n=1;while(used[y].has(n))n++;used[y].add(n);o.no=canonical(mode,y,n);changed=true;
-     });
-   });
-   if(changed){if(typeof save==='function')save();if(typeof renderAll==='function')renderAll()}
-   return changed;
- }
- function next(mode){const s=state(),y=String(new Date().getFullYear()),re=new RegExp(`^${mode==='Tarjous'?'TAR':'TIL'}-${y}-(\\d+)$`,'i');let max=0;(s?.orders||[]).filter(o=>o.mode===mode).forEach(o=>{const m=String(o.no||'').match(re);if(m)max=Math.max(max,+m[1])});return canonical(mode,y,max+1)}
- window.copysetNextNumber=next;window.copysetMigrateNumbers=migrate;
- setTimeout(migrate,0);
+  const root=window.CopySet=window.CopySet||{};
+  const yearOf=o=>{const raw=o?.date||o?.createdAt||o?.orderDate||'';const match=String(raw).match(/(20\d{2})/);return match?match[1]:String(new Date().getFullYear())};
+  const prefix=mode=>mode==='Tarjous'?'TAR':'TIL';
+  const canonical=(mode,year,n)=>`${prefix(mode)}-${year}-${String(n).padStart(4,'0')}`;
+  const canonicalPattern=mode=>new RegExp(`^${prefix(mode)}-20\\d{2}-\\d{4}$`,'i');
+
+  function migrate(){
+    const state=root.state?.();
+    if(!state||!Array.isArray(state.orders))return false;
+    let changed=false;
+    ['Tarjous','Tilaus'].forEach(mode=>{
+      const rows=state.orders.filter(o=>o.mode===mode);
+      const used={};
+      const existing=new RegExp(`^${prefix(mode)}-(20\\d{2})-(\\d+)$`,'i');
+      rows.forEach(o=>{const match=String(o.no||'').match(existing);if(match){used[match[1]]=used[match[1]]||new Set();used[match[1]].add(Number(match[2]))}});
+      rows.sort((a,b)=>String(a.date||a.createdAt||'').localeCompare(String(b.date||b.createdAt||''))||String(a.id).localeCompare(String(b.id))).forEach(o=>{
+        if(canonicalPattern(mode).test(String(o.no||'')))return;
+        const year=yearOf(o);used[year]=used[year]||new Set();let n=1;while(used[year].has(n))n++;used[year].add(n);o.no=canonical(mode,year,n);changed=true;
+      });
+    });
+    if(changed){root.save?.();root.render?.()}
+    return changed;
+  }
+
+  function next(mode){
+    const state=root.state?.(),year=String(new Date().getFullYear()),pattern=new RegExp(`^${prefix(mode)}-${year}-(\\d+)$`,'i');
+    let max=0;
+    (state?.orders||[]).filter(o=>o.mode===mode).forEach(o=>{const match=String(o.no||'').match(pattern);if(match)max=Math.max(max,Number(match[1]))});
+    return canonical(mode,year,max+1);
+  }
+
+  root.numbering={next,migrate};
+  window.copysetNextNumber=next;
+  window.copysetMigrateNumbers=migrate;
+  migrate();
 })();
