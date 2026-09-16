@@ -1232,7 +1232,7 @@ function v2AddExtra(i,label){v2SaveTempProducts();let o=st.orders.find(x=>x.id==
 function v2RemoveExtra(i,j){v2SaveTempProducts();let o=st.orders.find(x=>x.id===edit)||v2Draft;o.products[i].extras.splice(j,1);v2RefreshProducts()}
 // Inject multi-product editor into the existing form and remove manual status control from normal use.
 let v2Draft=null;const _v2OrderForm=orderForm;orderForm=function(o){v2EnsureProducts(o);v2Draft=o;let h=_v2OrderForm(o);h=h.replace(/<div class="lab">Status<\/div><select id="fstatus"[\s\S]*?<\/select>/,'<div class="lab">Status</div><div class="badge">Workflow ohjaa statusta automaattisesti</div>');h+=`<div class="section"><div class="sh">Tuotteet, hinnat ja tuotekohtaiset lisätyöt</div><div class="sb"><div id="v2ProductHost">${v2ProductRowsHtml(o)}</div></div></div>`;return h}
-function v2EnhanceForm(){document.querySelectorAll('#mb .section .sh').forEach(sh=>{if(sh.textContent.trim()==='2. Tuote ja hinta')sh.parentElement.classList.add('v2-hidden')})}
+function v2EnhanceForm(){document.querySelectorAll('#mb .section .sh').forEach(sh=>{if(sh.textContent.trim()==='2. Tuote ja hinta'&&!sh.parentElement.querySelector('#copysetFormPrice'))sh.parentElement.classList.add('v2-hidden')})}
 const _v2NewOrder=newOrder;newOrder=function(m){let r=_v2NewOrder(m);setTimeout(v2EnhanceForm,0);return r};const _v2EditOrder=editOrder;editOrder=function(id){let r=_v2EditOrder(id);setTimeout(v2EnhanceForm,0);return r}
 const _v2SaveOrder=saveOrder;saveOrder=function(){let o=st.orders.find(x=>x.id===edit);if(o&&document.getElementById('v2products')){o.products=v2CollectProducts();v2SyncLegacy(o)}return _v2SaveOrder()}
 // If legacy save overwrites product totals, restore product lines after save from current editor.
