@@ -71,3 +71,22 @@ Do not bulk-delete or partially overwrite `app-base.html`. It is still a ~260 KB
 
 ## Verification status
 Structural changes are committed on the clean branch, but browser interaction has not been verified in this environment. Do not merge to `main` until these critical paths are manually tested: create/edit offer, customer search/create, pricing, accept offer -> order, production steps -> ready -> invoice review -> invoiced, work card, delivery note/shipping label, numbering and mobile order list.
+
+## Continuation pass — clean43
+
+Completed on `perfect-clean-2026-09-16`:
+
+- Canonical offer/order form now owns creation and editing entrypoints.
+- Form serialization includes editable TAR/TIL number, customer data, Finnish dates, delivery rows, production selection, VAT, 50 € setup fee, 6 € billing fee, 21-day payment terms, order reference and e-invoice fields.
+- Continuous customer search and inline customer creation use `customerApi`; postal code and city remain separate fields.
+- Canonical order commands own copy-to-new and delete actions. Copies receive a new TIL number and cleared production/invoice state.
+- Dashboard/BI, invoiced-order archive, CRM, products, suppliers and marketing are external canonical modules.
+- Dashboard supports day, week, month, year and custom date ranges plus product/customer sales analysis.
+- `index.html` clean bundle is now `20260916-clean43`.
+- All 23 referenced JavaScript modules exist and pass syntax compilation.
+- No clean module contains `v2EnsureProducts`, `MutationObserver`, `setInterval` polling or legacy controller monkey-patch declarations.
+- Latest Vercel branch deployment builds successfully.
+
+### Compatibility boundary still intentionally retained
+
+`app-base.html` is still loaded for the static shell, demo seed data, local persistence initialization, product presets and the remaining legacy quote document actions (open/preflight/send/reject). It must not be deleted until those final ownership chains are extracted and the protected preview has been interactively verified. The clean modules now own the customer-visible creation/editing, list, workflow, pricing, CRM, archive, dashboard and secondary-view entrypoints.
