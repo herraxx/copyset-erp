@@ -8,7 +8,7 @@
 <body>
 <script>
 (function bootstrapCopySet() {
-  const version = '20260917-clean58';
+  const version = '20260917-clean59';
 
   const styles = [
     'styles/base.css',
@@ -79,14 +79,14 @@
 
   document.dispatchEvent(new CustomEvent('copyset:clean-ready'));
 })();
-<\\/script>`;
+<\/script>`;
 
   const styleTags = styles
     .map(path => `<link rel="stylesheet" href="/${path}?v=${version}">`)
     .join('');
 
   const scriptTags = scripts
-    .map(path => `<script src="/${path}?v=${version}"><\\/script>`)
+    .map(path => `<script src="/${path}?v=${version}"><\/script>`)
     .join('');
 
   const assets = styleTags + scriptTags + cleanBootstrap;
