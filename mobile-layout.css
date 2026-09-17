@@ -1,0 +1,124 @@
+/* CopySet ERP — final mobile hardening (phones and small tablets). */
+@media(max-width:850px){
+ html,body{width:100%;max-width:100%;overflow-x:hidden}
+ body{-webkit-text-size-adjust:100%}
+ .app,.main,.content,.view{width:100%;min-width:0;max-width:100%}
+
+ /* Compact one-line navigation instead of a tall multi-row menu. */
+ .side{
+  position:sticky!important;
+  top:0!important;
+  z-index:40!important;
+  display:flex!important;
+  align-items:stretch!important;
+  width:100%!important;
+  height:auto!important;
+  padding:7px!important;
+  gap:6px!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  background:#353535!important;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+ }
+ .side::-webkit-scrollbar{display:none}
+ .sidebrand,.sidefoot,.navlabel{display:none!important}
+ .navgroup{display:contents!important}
+ .side .nav{
+  flex:0 0 auto!important;
+  width:auto!important;
+  min-width:102px!important;
+  min-height:44px!important;
+  margin:0!important;
+  padding:8px 10px!important;
+  display:flex!important;
+  flex-direction:row!important;
+  justify-content:center!important;
+  align-items:center!important;
+  gap:6px!important;
+  border-radius:9px!important;
+  font-size:10px!important;
+  white-space:nowrap!important;
+ }
+ .side .navicon{font-size:13px}
+
+ /* Header actions stay readable and do not overflow. */
+ .main .top{position:relative!important;padding:8px!important;min-height:auto!important}
+ .top-create-actions{width:100%!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
+ .top-create-actions .btn{min-width:0!important;white-space:normal;line-height:1.2}
+ .content{padding:8px!important}
+
+ /* Lists become tap-friendly cards. */
+ .list-shell{padding:9px!important;border-radius:12px}
+ .list-tools>input{width:100%!important;min-width:0!important;font-size:16px!important}
+ .list-filters{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important}
+ .list-filter{min-width:0!important;min-height:42px!important}
+ .list-shell tr{overflow:hidden}
+ .list-shell td{min-width:0!important;overflow-wrap:anywhere}
+ .list-shell td:last-child>.btn{width:100%!important;margin-top:5px!important}
+
+ /* All secondary views stack cleanly. */
+ .cards,.marketing,.products,.metrics,.dashboard-bi-grid,.pricegrid{grid-template-columns:1fr!important}
+ .toolbar{align-items:stretch}
+ .toolbar>div{min-width:0}
+ .toolbar>.btn{width:100%}
+ .tablewrap,.crm-list{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+ .crm-row{min-width:680px}
+ .card{max-width:100%;overflow-wrap:anywhere}
+ .pick{max-height:300px}
+
+ /* Forms use the full phone width without clipped fields. */
+ #modal.modal{width:100%;padding:0!important}
+ #modal>.box{width:100%!important;max-width:100%!important;min-height:100dvh;border-radius:0!important}
+ #modal #mb{max-width:100%;overflow-x:hidden}
+ #modal #mb input,#modal #mb select,#modal #mb textarea,
+ #marketing input,#marketing select,#marketing textarea,
+ #pricing input{font-size:16px!important}
+ #modal #mb .tabs{grid-template-columns:1fr 1fr}
+ #modal #mb .delivery,#modal #mb .contactrow{max-width:100%}
+ .customer-search-results{max-width:100%}
+
+ /* Pricing calculator and administration. */
+ .pricing-modal{padding:0!important}
+ .pricing-modal.on{align-items:flex-end!important}
+ .pricing-sheet{width:100%!important;max-width:100%!important;max-height:96dvh!important;border-radius:16px 16px 0 0!important;padding:13px!important}
+ .pricing-layout{grid-template-columns:1fr!important}
+ .pricing-summary{position:static!important}
+ .pricing-add{grid-template-columns:minmax(0,1fr) 78px 64px!important}
+ .price-admin{max-width:100%}
+ .price-admin-grid{grid-template-columns:1fr!important}
+ .price-admin-hero{align-items:flex-start!important;flex-direction:column!important}
+ .price-admin-actions{width:100%}
+ .price-admin-actions .btn{flex:1}
+
+ /* Full-page workflow and invoice review. */
+ #copyset-order-page{width:100%;max-width:100%;overflow-x:hidden}
+ .op-main{width:100%;max-width:100%}
+ .op-actions{padding-bottom:max(7px,env(safe-area-inset-bottom))!important}
+ #copyset-invoice-review{width:100%;max-width:100%;overflow-x:hidden!important}
+ #copyset-invoice-review footer{padding-bottom:max(16px,env(safe-area-inset-bottom))!important}
+ #copyset-invoice-review footer button{width:100%}
+
+ /* Editable work order. */
+ .workorder{max-width:100%}
+ .workorder-head,.workorder-meta,.workorder-products,.workorder-bottom{max-width:100%}
+ .workorder-grid>*{min-width:0}
+}
+
+@media(max-width:430px){
+ .content{padding:6px!important}
+ .side .nav{min-width:94px!important;padding:7px 8px!important}
+ .list-filters{grid-template-columns:1fr 1fr!important}
+ .top-create-actions .btn{font-size:10px!important}
+ .pricing-fields{grid-template-columns:1fr!important}
+ .pricing-check{grid-template-columns:22px minmax(0,1fr) 74px 20px!important}
+ .pricing-add{grid-template-columns:1fr 76px!important}
+ .pricing-add button{grid-column:1/-1;min-height:42px}
+ .price-admin-actions{display:grid!important;grid-template-columns:1fr!important}
+ .workorder-head-actions{grid-template-columns:1fr!important}
+}
+
+@media(max-width:360px){
+ .list-filters{grid-template-columns:1fr!important}
+ .top-create-actions{grid-template-columns:1fr!important}
+}
