@@ -1,0 +1,186 @@
+/* CopySet ERP final visual contract.
+   Loaded last so Tarjoukset and Tilaukset always share the same layout. */
+:root {
+  --copyset-orange: #f58a24;
+  --copyset-orange-dark: #e97914;
+  --copyset-charcoal: #353535;
+  --copyset-border: #d8dee5;
+  --copyset-surface: #ffffff;
+  --copyset-muted: #65707c;
+}
+
+.main > .top {
+  background: var(--copyset-charcoal) !important;
+  color: #fff !important;
+  border-bottom: 1px solid #484848 !important;
+}
+
+.main > .top h1,
+#title {
+  color: #fff !important;
+}
+
+#title .top-title-icon,
+.top-title-icon {
+  display: none !important;
+}
+
+.main > .top .small {
+  color: #d5d9dc !important;
+}
+
+/* Identical list shell and group navigation on both primary views. */
+#quotes > .list-shell,
+#orders > .list-shell {
+  width: 100% !important;
+  margin: 0 0 16px !important;
+  padding: 18px !important;
+  background: var(--copyset-surface) !important;
+  border: 1px solid var(--copyset-border) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 28px rgba(28, 35, 43, .06) !important;
+}
+
+#quotes .list-tools,
+#orders .list-tools {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  align-items: stretch !important;
+  gap: 12px !important;
+  margin: 0 0 14px !important;
+}
+
+#quotes .list-tools > input,
+#orders .list-tools > input {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  padding: 11px 14px !important;
+  border: 1px solid #cfd6de !important;
+  border-radius: 10px !important;
+  background: #fbfcfd !important;
+  font-size: 13px !important;
+}
+
+#quotes .list-filters,
+#orders .list-filters {
+  position: relative !important;
+  grid-column: 1 / -1 !important;
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) !important;
+  width: 100% !important;
+  gap: 8px !important;
+  padding: 25px 0 0 !important;
+  margin: 0 !important;
+  align-items: stretch !important;
+}
+
+#quotes .list-filters::before,
+#orders .list-filters::before {
+  content: "RYHMÄT" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 1px !important;
+  color: var(--copyset-muted) !important;
+  font-size: 10px !important;
+  font-weight: 900 !important;
+  letter-spacing: .12em !important;
+}
+
+#quotes .list-filter,
+#orders .list-filter {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 42px !important;
+  margin: 0 !important;
+  padding: 9px 11px !important;
+  border: 1px solid #d6dce3 !important;
+  border-radius: 10px !important;
+  background: linear-gradient(180deg, #fff, #f8fafb) !important;
+  color: #303942 !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  box-shadow: 0 1px 2px rgba(24, 32, 40, .04) !important;
+}
+
+#quotes .list-filter.on,
+#orders .list-filter.on {
+  background: linear-gradient(135deg, #ff9635, var(--copyset-orange)) !important;
+  border-color: var(--copyset-orange) !important;
+  color: #fff !important;
+  box-shadow: 0 5px 14px rgba(245, 138, 36, .24) !important;
+}
+
+#quotes .list-filter .count,
+#orders .list-filter .count {
+  display: inline-grid !important;
+  place-items: center !important;
+  min-width: 24px !important;
+  height: 22px !important;
+  padding: 0 7px !important;
+  border-radius: 999px !important;
+  background: #edf1f4 !important;
+  color: #3f4851 !important;
+  font-size: 10px !important;
+}
+
+#quotes .list-filter.on .count,
+#orders .list-filter.on .count {
+  background: rgba(255, 255, 255, .25) !important;
+  color: #fff !important;
+}
+
+#orders .list-filter.late:not(.on) {
+  background: #fff7f6 !important;
+  border-color: #efc3bf !important;
+  color: #b42318 !important;
+}
+
+#quotes .tablewrap,
+#orders .tablewrap {
+  width: 100% !important;
+  border: 1px solid #dfe4e9 !important;
+  border-radius: 11px !important;
+  background: #fff !important;
+  overflow: auto !important;
+}
+
+#quotes th,
+#orders th {
+  height: 38px !important;
+  padding: 10px 12px !important;
+  background: #f3f5f7 !important;
+  color: #59636e !important;
+  font-size: 9px !important;
+  letter-spacing: .08em !important;
+}
+
+#quotes td,
+#orders td {
+  padding: 12px !important;
+  vertical-align: middle !important;
+}
+
+@media (max-width: 850px) {
+  #quotes > .list-shell,
+  #orders > .list-shell {
+    padding: 10px !important;
+    border-radius: 12px !important;
+  }
+
+  #quotes .list-filters,
+  #orders .list-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    padding-top: 24px !important;
+  }
+
+  #quotes .list-filter,
+  #orders .list-filter {
+    min-height: 40px !important;
+  }
+}
