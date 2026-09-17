@@ -121,3 +121,17 @@ button:disabled,.btn:disabled{opacity:.55;box-shadow:none;transform:none}
 @media(prefers-reduced-motion:reduce){
  button,.btn{transition:none}
 }
+
+
+/* Canonical application shell. Keep navigation, header and titles neutral and stable. */
+@media(min-width:851px){
+ .app{display:grid!important;grid-template-columns:252px minmax(0,1fr)!important;min-height:100vh}
+ .side{display:flex!important;position:sticky!important;top:0!important;width:252px!important;height:100vh!important}
+ .main{display:block!important;min-width:0!important;width:auto!important}
+ .main .top{display:flex!important;position:sticky!important;top:0!important;min-height:76px!important;background:#353535!important;color:#fff!important}
+}
+#title{color:#fff!important}
+#title .top-title-icon{display:none!important}
+.top-create-actions{display:flex;gap:10px;align-items:center}
+.quote-actions{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.quote-actions:empty{display:none}
