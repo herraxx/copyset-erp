@@ -3,6 +3,9 @@
 (function(){
   if(typeof renderQuotes!=='function')return;
   const baseRenderQuotes=renderQuotes;
+  const polish=document.createElement('style');
+  polish.textContent='#title{color:#fff!important}.top-title-icon{display:none!important}#quotes>.quote-summary{display:none!important}';
+  document.head.appendChild(polish);
 
   function normalizeQuoteList(){
     const root=document.getElementById('quotes');
@@ -14,7 +17,7 @@
     const summary=root.querySelector(':scope > .quote-summary');
 
     if(intro)intro.hidden=true;
-    if(summary)summary.hidden=true;
+    if(summary){summary.hidden=true;summary.style.setProperty('display','none','important');}
     if(!listCard)return;
 
     listCard.classList.add('list-shell');
