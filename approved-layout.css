@@ -26,3 +26,14 @@
 .quote-stage.hyvaksytty{background:#e7f6ec;color:#19713b}.quote-stage.hylatty{background:#fdeceb;color:#a32a22}.quote-stage.lahetetty{background:#e9f2ff;color:#205fa7}.quote-stage.valmis-lahetettavaksi{background:#fff3df;color:#985400}
 .badge.vahvistettu{background:#eaf3ff;color:#1d5d9e}.badge.tuotannossa{background:#fff1df;color:#995000}.badge.valmis{background:#e8f7ed;color:#21713d}.badge.laskutusvalmis{background:#f0eafe;color:#6543a5}.badge.laskutettu{background:#e8f0f2;color:#415961}
 @media(max-width:850px){.list-shell{padding:10px}.list-filters{grid-template-columns:repeat(2,minmax(0,1fr))!important;padding-top:24px}.list-filter{min-height:40px}.list-note{margin-top:0}.list-shell table{min-width:0!important}.list-shell tbody tr:hover{background:#fff}}
+
+
+/* Alihankkijat uses the same register layout as Asiakas CRM. */
+.supplier-list{background:#fff;border:1px solid #dfe4e9;border-radius:12px;overflow:hidden;box-shadow:0 5px 18px rgba(28,36,43,.04)}
+.supplier-list .supplier-row{grid-template-columns:minmax(180px,1.35fr) minmax(120px,.9fr) minmax(140px,1fr) minmax(100px,.65fr) minmax(180px,1.25fr) auto}
+.supplier-list [data-vendor-row]{cursor:pointer;transition:background .14s}
+.supplier-list [data-vendor-row]:hover{background:#fff8f2}
+.supplier-list .crm-company{font-weight:900;color:#283139}
+.supplier-list .crm-sub{margin-top:3px;color:#6b7680;font-size:11px}
+.supplier-empty{padding:26px;text-align:center;color:#6b7680}
+@media(max-width:850px){.supplier-list{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}.supplier-list .supplier-row{min-width:760px}}
