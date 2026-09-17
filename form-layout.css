@@ -44,6 +44,7 @@
 /* Shared fields */
 #modal #mb .form{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 12px}
 #modal #mb .form>div,#modal #mb .mini>*,#modal #mb .contactrow>*{min-width:0}
+.copyset-form-layout .copyset-field{min-width:0}
 #modal #mb .lab,
 #marketing .lab,
 #pricing .price-admin-field label,
@@ -127,6 +128,8 @@
  bottom:0;
  z-index:8;
 }
+.copyset-form-layout .copyset-form-actions{gap:9px}
+.copyset-form-layout .copyset-form-section{scroll-margin-top:76px}
 #modal #mb .btn,#marketing .btn,#pricing .btn{
  min-height:40px;
  padding:9px 14px;
