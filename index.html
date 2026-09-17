@@ -8,7 +8,7 @@
 <body>
 <script>
 (function bootstrapCopySet() {
-  const version = '20260917-restore61';
+  const version = '20260917-restore62';
 
   const styles = [
     'styles/base.css',
@@ -89,7 +89,8 @@
     .map(path => `<script src="/${path}?v=${version}"><\\/script>`)
     .join('');
 
-  const assets = styleTags + scriptTags + cleanBootstrap;
+  const compatibilityPatch = '<script src="/legacy-ui-patch.js?v=' + version + '"></scr' + 'ipt>';
+  const assets = styleTags + compatibilityPatch + scriptTags + cleanBootstrap;
 
   fetch(`/app-base.html?v=${version}`)
     .then(response => {
