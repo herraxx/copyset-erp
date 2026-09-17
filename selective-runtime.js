@@ -19,6 +19,7 @@
    window.openOrder=id=>root.orderPage.open(id);
  }
 
+ function resetScroll(){document.documentElement.scrollTop=0;document.body.scrollTop=0}
  function openPricingView(){
    document.querySelectorAll('.nav').forEach(x=>x.classList.remove('on'));
    document.querySelectorAll('.view').forEach(x=>x.classList.remove('on'));
@@ -27,13 +28,14 @@
    button?.classList.add('on');view?.classList.add('on');
    const title=document.getElementById('title');
    if(title)title.textContent='Hinnoittelu';
-   root.renderPricing?.();
+   root.renderPricing?.();resetScroll();
  }
  const pricingButton=document.querySelector('.nav[data-v="pricing"]');
  if(pricingButton)pricingButton.onclick=openPricingView;
  root.renderPricing?.();
  root.pricing?.enhance?.();
 
+ document.querySelectorAll('.side .nav').forEach(button=>button.addEventListener('click',()=>setTimeout(resetScroll,0)));
  document.addEventListener('click',event=>{
    if(event.target.closest('.nav[data-v="pricing"]'))setTimeout(openPricingView,0);
    if(event.target.closest('.top-create-actions'))setTimeout(()=>root.pricing?.enhance?.(),0);
