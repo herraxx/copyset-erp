@@ -34,5 +34,28 @@
     root.orderPage?.open?.(order.id);
     return order;
   }
-  root.quotes=Object.freeze({find:findQuote,accept});
+  function linkedOrder(quote){
+    const s=state();if(!s||!quote)return null;
+    return (quote.convertedOrderId&&root.getOrder?.(quote.convertedOrderId))||
+      (s.orders||[]).find(o=>o.mode==='Tilaus'&&(String(o.sourceQuoteId||'')===String(quote.id)||String(o.sourceQuoteNo||'')===String(quote.no)))||null;
+  }
+  function createOrder(quote){
+    const s=state();if(!s||!quote||!root.numbering?.next)return null;
+    const order=clone(quote),acceptedAt=quote.quoteAcceptedAt||new Date().toISOString();
+    order.id=nextInternalId();order.mode='Tilaus';order.no=root.numbering.next('Tilaus',order.date);
+    order.status='Vahvistettu';order.productionStep='';
+    delete order.quoteStage;delete order.offerStatus;delete order.convertedOrderId;
+    order.sourceQuoteId=quote.id;order.sourceQuoteNo=quote.no;order.quoteAcceptedAt=acceptedAt;
+    quote.quoteStage='Hyväksytty';quote.offerStatus='Hyväksytty';
+    quote.convertedOrderId=order.id;quote.quoteAcceptedAt=acceptedAt;
+    s.orders.push(order);root.persist?.({render:false});root.render?.();root.renderQuotes?.();root.renderOrders?.();
+    return order;
+  }
+  function openOrder(quoteId){
+    const quote=findQuote(quoteId);if(!quote)return null;
+    const order=linkedOrder(quote)||createOrder(quote);
+    if(order)root.orderPage?.open?.(order.id);
+    return order;
+  }
+  root.quotes=Object.freeze({find:findQuote,accept,openOrder});
 })();
