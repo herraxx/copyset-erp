@@ -1034,3 +1034,72 @@ input:focus,select:focus,textarea:focus,.list-tools>input:focus{
 }
 
 @media(max-width:390px){.side .nav{min-width:98px!important}.top-create-actions .btn{font-size:10px!important}}
+
+
+/* Canonical A4 document contract — every customer and production document */
+.doc-preview{
+ background:#e9edf0!important;
+ padding:22px!important;
+ overflow:auto!important;
+}
+.doc-preview .doc-paper,
+.standalone-a4{
+ box-sizing:border-box!important;
+ width:210mm!important;
+ max-width:210mm!important;
+ min-height:297mm!important;
+ margin:0 auto!important;
+ padding:14mm!important;
+ background:#fff!important;
+ color:#202830!important;
+ box-shadow:0 12px 36px rgba(27,35,43,.18)!important;
+}
+.standalone-document{
+ margin:0!important;
+ background:#e9edf0!important;
+ color:#202830!important;
+ font-family:Arial,Helvetica,sans-serif!important;
+}
+.standalone-printbar{
+ position:sticky;top:0;z-index:50;box-sizing:border-box;
+ display:flex;align-items:center;justify-content:space-between;gap:16px;
+ width:100%;min-height:58px;padding:10px 18px;
+ background:#363b3f;color:#fff;box-shadow:0 4px 16px rgba(0,0,0,.2);
+}
+.standalone-printbar>div{display:flex;gap:8px}
+.standalone-printbar button{
+ min-height:38px;padding:9px 16px;border:1px solid #cfd6dc;border-radius:9px;
+ background:#fff;color:#202830;font-weight:800;cursor:pointer;
+}
+.standalone-printbar button.primary{border-color:#ff9a36;background:#ff9a36;color:#fff}
+.standalone-a4{margin:20px auto!important}
+.standalone-a4 .confirmdoc{min-height:269mm}
+.op-order-final{position:relative!important}
+.op-document-stamp{
+ position:absolute;right:14mm;top:12mm;z-index:3;
+ padding:9px 14px;border:2px solid #ff9a36;border-radius:999px;
+ background:#fff8ef;color:#a95309;font-size:11px;font-weight:900;letter-spacing:.06em;
+}
+.op-document-stamp.complete{border-color:#2ab66b;background:#eaf8f0;color:#187443}
+
+@media(max-width:850px){
+ .doc-preview{padding:8px!important}
+ .doc-preview .doc-paper,.standalone-a4{
+  width:calc(100% - 16px)!important;max-width:none!important;min-height:0!important;
+  margin:8px auto!important;padding:18px!important;
+ }
+ .standalone-a4 .confirmdoc{min-height:0}
+ .standalone-printbar{padding:8px 10px}
+ .op-document-stamp{position:static;display:inline-flex;margin:12px 12px 0}
+}
+
+@media print{
+ @page{size:A4;margin:0}
+ html,body,.standalone-document{width:210mm!important;background:#fff!important}
+ .standalone-printbar{display:none!important}
+ .standalone-a4,.doc-preview .doc-paper{
+  width:210mm!important;max-width:210mm!important;min-height:297mm!important;
+  margin:0!important;padding:14mm!important;box-shadow:none!important;
+ }
+ .standalone-a4 .confirmdoc{min-height:269mm}
+}
