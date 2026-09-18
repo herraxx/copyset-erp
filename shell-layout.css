@@ -1,0 +1,38 @@
+/* CopySet ERP canonical application shell. This file is loaded last. */
+:root{--shell:#353535;--shell-muted:#aeb4ba;--shell-line:#494949;--shell-orange:#f58a24}
+.app{display:grid!important;grid-template-columns:232px minmax(0,1fr)!important;min-height:100vh!important;background:#f3f4f6}
+.side{position:sticky!important;top:0!important;display:flex!important;flex-direction:column!important;width:232px!important;height:100vh!important;padding:22px 16px 16px!important;overflow-y:auto!important;background:var(--shell)!important;color:#fff!important}
+.sidebrand{padding:0 5px 19px!important;border-bottom:1px solid var(--shell-line)!important;margin-bottom:18px!important}
+.sidebrand .logo{margin:0!important;font-size:26px!important;line-height:1!important;letter-spacing:-.03em!important;color:#fff!important}
+.sidebrand .sidetag{margin-top:10px!important;color:#91989e!important;font-size:9px!important;font-weight:800!important;letter-spacing:.22em!important}
+.navgroup{display:block!important;margin:0 0 17px!important}
+.navlabel{display:block!important;margin:0 7px 7px!important;color:#949ba1!important;font-size:9px!important;font-weight:900!important;letter-spacing:.16em!important}
+.side .nav{display:flex!important;align-items:center!important;width:100%!important;min-height:42px!important;margin:3px 0!important;padding:10px 12px!important;border:0!important;border-radius:9px!important;background:transparent!important;color:#d8dcdf!important;text-align:left!important;font-size:13px!important;font-weight:750!important;line-height:1.2!important;box-shadow:none!important}
+.side .nav::before{content:"";flex:0 0 6px;width:6px;height:6px;margin-right:11px;border-radius:50%;background:#777f85;transition:background .14s ease,box-shadow .14s ease}
+.side .nav:hover{background:#414141!important;color:#fff!important;box-shadow:none!important;transform:none!important}
+.side .nav.on{background:linear-gradient(135deg,#ff9635,var(--shell-orange))!important;color:#fff!important;box-shadow:0 6px 16px rgba(245,138,36,.24)!important}
+.side .nav.on::before{background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.18)}
+.sidefoot{margin-top:auto!important;padding:14px 7px 2px!important;border-top:1px solid var(--shell-line)!important;color:var(--shell-muted)!important;font-size:11px!important}
+.statusdot{display:inline-block;width:7px;height:7px;margin-right:7px;border-radius:50%;background:#35ba6e}
+.main{min-width:0!important;width:100%!important}
+.main>.top{position:sticky!important;top:0!important;z-index:18!important;display:flex!important;align-items:center!important;justify-content:flex-end!important;min-height:72px!important;padding:12px 22px!important;background:var(--shell)!important;border-bottom:1px solid var(--shell-line)!important}
+.visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.top-create-actions{position:static!important;left:auto!important;transform:none!important;display:flex!important;gap:10px!important;margin-left:auto!important}
+.top-create-actions .btn{min-width:132px!important;min-height:42px!important;padding:10px 16px!important;border-radius:10px!important;font-size:12px!important;font-weight:850!important}
+.top-create-actions .top-quote{background:#24ad61!important;border-color:#24ad61!important;color:#fff!important}
+.top-create-actions .top-order{background:linear-gradient(180deg,#ff9635,var(--shell-orange))!important;border-color:var(--shell-orange)!important;color:#fff!important}
+
+@media(max-width:850px){
+ .app{display:block!important;width:100%!important}
+ .side{position:sticky!important;top:0!important;z-index:40!important;display:flex!important;flex-direction:row!important;align-items:center!important;width:100%!important;height:auto!important;padding:7px!important;gap:6px!important;overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none}
+ .side::-webkit-scrollbar{display:none}
+ .sidebrand,.sidefoot,.navlabel{display:none!important}
+ .navgroup{display:contents!important;margin:0!important}
+ .side .nav{flex:0 0 auto!important;width:auto!important;min-width:108px!important;min-height:42px!important;margin:0!important;padding:9px 11px!important;justify-content:center!important;text-align:center!important;white-space:nowrap!important;font-size:10px!important}
+ .side .nav::before{display:none!important}
+ .main>.top{position:relative!important;min-height:58px!important;padding:8px!important}
+ .top-create-actions{display:grid!important;grid-template-columns:1fr 1fr!important;width:100%!important;gap:7px!important}
+ .top-create-actions .btn{width:100%!important;min-width:0!important;min-height:42px!important;padding:9px 7px!important;font-size:11px!important}
+}
+
+@media(max-width:390px){.side .nav{min-width:98px!important}.top-create-actions .btn{font-size:10px!important}}
