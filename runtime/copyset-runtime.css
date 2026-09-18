@@ -1103,3 +1103,26 @@ input:focus,select:focus,textarea:focus,.list-tools>input:focus{
  }
  .standalone-a4 .confirmdoc{min-height:269mm}
 }
+
+
+/* Invoice review uses the same physical A4 canvas */
+#copyset-invoice-review{overflow:auto!important}
+#copyset-invoice-review .ir-main{
+ box-sizing:border-box!important;
+ width:210mm!important;max-width:210mm!important;min-height:297mm!important;
+ margin:20px auto 110px!important;padding:14mm!important;
+ background:#fff!important;box-shadow:0 12px 36px rgba(27,35,43,.16)!important;
+}
+@media(max-width:850px){
+ #copyset-invoice-review .ir-main{
+  width:calc(100% - 16px)!important;max-width:none!important;min-height:0!important;
+  margin:8px auto 110px!important;padding:18px!important;
+ }
+}
+@media print{
+ #copyset-invoice-review .ir-top,#copyset-invoice-review .ir-actions{display:none!important}
+ #copyset-invoice-review .ir-main{
+  width:210mm!important;max-width:210mm!important;min-height:297mm!important;
+  margin:0!important;padding:14mm!important;box-shadow:none!important;
+ }
+}
