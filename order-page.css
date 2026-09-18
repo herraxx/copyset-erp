@@ -151,3 +151,8 @@ body.ir-open{overflow:hidden}#copyset-invoice-review{position:fixed;inset:0;z-in
 @media print{
  .op-order-a4{width:210mm;min-height:297mm;margin:0;padding:14mm;border:0;box-shadow:none}
 }
+
+.op-order-a4-ready{position:relative}
+.op-a4-status{position:absolute;top:14mm;left:50%;z-index:2;transform:translateX(-50%);padding:7px 13px;border:1px solid #b9dfc7;border-radius:99px;background:#eaf7ef;color:#18733c;font-size:9px;font-weight:950;letter-spacing:.08em;white-space:nowrap}
+@media(max-width:760px){.op-a4-status{position:static;display:inline-flex;margin:0 0 13px;transform:none}}
+@media print{.op-a4-status{top:14mm}}
