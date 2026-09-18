@@ -108,3 +108,46 @@ body.ir-open{overflow:hidden}#copyset-invoice-review{position:fixed;inset:0;z-in
  #copyset-invoice-review .ir-main{width:210mm;max-width:none;min-height:297mm;margin:0;padding:14mm;box-shadow:none}
  body.ir-open{overflow:visible}
 }
+
+/* Confirmed order is always presented as an A4 document */
+.op-order-a4{
+ width:min(210mm,100%);
+ min-height:297mm;
+ margin:0 auto 16px;
+ padding:14mm;
+ background:#fff;
+ border:1px solid #d7dde2;
+ box-shadow:0 12px 36px rgba(25,32,38,.14);
+}
+.op-order-a4 .confirmdoc{position:relative;min-height:269mm;color:#222b32}
+.op-order-a4 .confhead{display:flex;align-items:flex-start;justify-content:space-between;gap:25px}
+.op-order-a4 .conflogo{font-size:31px;font-weight:950;letter-spacing:-1.4px}
+.op-order-a4 .conflogo span{color:#f58a24}
+.op-order-a4 .conftitle{text-align:right;color:#303942;font-size:23px;font-weight:950;letter-spacing:.04em}
+.op-order-a4 .conftitle small{display:block;margin-top:5px;color:#66727c;font-size:12px;font-weight:700;letter-spacing:0}
+.op-order-a4 .confbar{height:6px;margin:14px 0 24px;background:#f58a24}
+.op-order-a4 .confgrid{display:grid;grid-template-columns:1fr 1fr;gap:12mm;margin:0 0 9mm;font-size:12px;line-height:1.55}
+.op-order-a4 .conflabel{margin-bottom:6px;color:#c65c05;font-size:9px;font-weight:950;letter-spacing:.12em}
+.op-order-a4 .confsection{margin:0 0 9mm}
+.op-order-a4 .conftable{width:100%;border-collapse:collapse;table-layout:fixed}
+.op-order-a4 .conftable th,.op-order-a4 .conftable td{padding:10px 9px;border-bottom:1px solid #dfe4e8;text-align:left;vertical-align:top;font-size:11px}
+.op-order-a4 .conftable th{background:#f1f4f6;color:#56616b;font-size:9px;letter-spacing:.07em}
+.op-order-a4 .conftable th:nth-child(2),.op-order-a4 .conftable td:nth-child(2){width:25%}
+.op-order-a4 .conftable th:last-child,.op-order-a4 .conftable td:last-child{width:25%;text-align:right}
+.op-order-a4 .conf-extra td{padding-top:7px;padding-bottom:7px;background:#fff9f3;color:#80440d}
+.op-order-a4 .confprice{width:48%;margin:8mm 0 0 auto;padding-top:4mm;border-top:2px solid #dfe4e8}
+.op-order-a4 .confprice>div{display:flex;justify-content:space-between;gap:20px;padding:4px 0;font-size:12px}
+.op-order-a4 .confprice .total{margin-top:5px;padding-top:10px;border-top:4px solid #f58a24;font-size:19px}
+.op-order-a4 .confnote{margin-top:10mm;padding:13px 15px;border-left:5px solid #f58a24;background:#fff8f1;font-size:11px}
+.op-order-a4 .conffoot{position:absolute;right:0;bottom:0;left:0;padding-top:9px;border-top:1px solid #dfe4e8;color:#75808a;font-size:9px;text-align:center}
+@media(max-width:760px){
+ .op-order-a4{width:100%;min-height:0;padding:16px;border-radius:8px;box-shadow:none}
+ .op-order-a4 .confirmdoc{min-height:0;padding-bottom:40px}
+ .op-order-a4 .confgrid{grid-template-columns:1fr;gap:14px;margin-bottom:20px}
+ .op-order-a4 .conftitle{font-size:17px}.op-order-a4 .conflogo{font-size:24px}
+ .op-order-a4 .confprice{width:100%}
+ .op-order-a4 .conffoot{position:static;margin-top:24px}
+}
+@media print{
+ .op-order-a4{width:210mm;min-height:297mm;margin:0;padding:14mm;border:0;box-shadow:none}
+}
