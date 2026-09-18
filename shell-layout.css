@@ -21,15 +21,9 @@
 .visually-hidden{display:none!important}
 .top-create-actions{position:static!important;left:auto!important;transform:none!important;display:flex!important;gap:10px!important;margin-left:auto!important}
 .top-create-actions .btn{min-width:132px!important;min-height:42px!important;padding:10px 16px!important;border-radius:10px!important;font-size:12px!important;font-weight:850!important}
-.top-create-actions .top-view{background:#45484b!important;border-color:#45484b!important;color:#dfe2e5!important;box-shadow:none!important}
-.top-create-actions .top-view:hover{background:#515559!important;border-color:#515559!important;color:#fff!important}
-.top-create-actions .top-view.on{background:linear-gradient(180deg,#ff9635,var(--shell-orange))!important;border-color:var(--shell-orange)!important;color:#fff!important;box-shadow:0 5px 14px rgba(245,138,36,.24)!important}
-
-/* Creation belongs to the list being worked on, not to global navigation. */
-#quotes .list-tools,#orders .list-tools{grid-template-columns:minmax(0,1fr) auto!important}
-#quotes .list-tools>input,#orders .list-tools>input{grid-column:1!important;grid-row:1!important}
-#quotes .list-create,#orders .list-create{grid-column:2!important;grid-row:1!important;min-width:145px!important;margin:0!important}
-#quotes .list-filters,#orders .list-filters{grid-column:1/-1!important}
+.top-create-actions .top-quote{background:#24ad61!important;border-color:#24ad61!important;color:#fff!important;box-shadow:0 5px 14px rgba(36,173,97,.22)!important}
+.top-create-actions .top-quote:hover{background:#1d9954!important;border-color:#1d9954!important}
+.top-create-actions .top-order{background:linear-gradient(180deg,#ff9635,var(--shell-orange))!important;border-color:var(--shell-orange)!important;color:#fff!important;box-shadow:0 5px 14px rgba(245,138,36,.24)!important}
 
 @media(max-width:850px){
  .app{display:block!important;width:100%!important}
@@ -42,9 +36,6 @@
  .main>.top{position:relative!important;min-height:58px!important;padding:8px!important}
  .top-create-actions{display:grid!important;grid-template-columns:1fr 1fr!important;width:100%!important;gap:7px!important}
  .top-create-actions .btn{width:100%!important;min-width:0!important;min-height:42px!important;padding:9px 7px!important;font-size:11px!important}
- #quotes .list-tools,#orders .list-tools{grid-template-columns:1fr!important}
- #quotes .list-tools>input,#orders .list-tools>input,#quotes .list-create,#orders .list-create{grid-column:1!important}
- #quotes .list-create,#orders .list-create{grid-row:2!important;width:100%!important}
 }
 
 @media(max-width:390px){.side .nav{min-width:98px!important}.top-create-actions .btn{font-size:10px!important}}
