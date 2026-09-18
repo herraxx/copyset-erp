@@ -9,7 +9,7 @@
   function accept(id){
     const s=state(),quote=findQuote(id);if(!s||!quote)return null;
     if(!root.numbering?.next)throw new Error('CopySet numbering module is not ready');
-    const quoteStage=quote.quoteStage||quote.offerStatus||quote.status;if(!['Lähetetty','Hyväksytty'].includes(quoteStage))return null;if(quoteStage==='Lähetetty'&&!confirm('Onko asiakas varmasti hyväksynyt tarjouksen? Hyväksyminen luo tarjouksesta tilauksen.'))return null;
+    const quoteStage=quote.quoteStage||quote.offerStatus||quote.status;if(!['Lähetetty','Hyväksytty'].includes(quoteStage))return null;
     const existing=linkedOrder(quote);if(existing){if(quote.convertedOrderId!==existing.id){quote.convertedOrderId=existing.id;root.persist?.({render:false})}root.orderPage?.open?.(existing.id);return existing}
     const order=clone(quote);
     order.id=nextInternalId();
