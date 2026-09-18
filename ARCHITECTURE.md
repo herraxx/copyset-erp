@@ -1,60 +1,42 @@
-# CopySet ERP — clean architecture
+# CopySet ERP — locked clean architecture
 
-Status 2026-09-18: Gate F is complete on `clean-runtime-2026-09-18`. The compatibility monolith has been retired; `index.html` loads only canonical modules.
+## Protected baseline
 
-This branch is the structural-clean workspace. Production remains on `main` until each migration gate is verified.
+The exact pre-cleanup application is preserved on branch `locked-working-2026-09-18`.
+Never rewrite or force-update that branch.
 
-## One owner per responsibility
+## Active clean branch
 
-- `index.html` — static application shell only: navigation, views, modals and deterministic imports. No business logic.
-- `styles/base.css` — shared layout/forms/tables/modal styles.
-- `styles/documents.css` — work card, delivery note, labels, invoice preview.
-- `data.js` — demo seed data and persistence/state initialization only.
-- `app-core.js` — shared helpers, normalization and state access.
-- `customers.js` — CRM/customer creation/search/fill.
-- `quotes.js` — tarjous form/list/approval/conversion.
-- `orders.js` — order form/list/save/copy.
-- `pricing.js` — the only pricing calculator implementation.
-- `order-page.js` — the only stage-specific order workflow UI.
-- `production.js` — production state/actions.
-- `core-actions.js` — printable production/shipping/customer documents.
-- `invoice-review.js` — the only invoice review/approval implementation.
-- `dashboard.js` — KPI and analytics.
-- `numbering-fix.js` — numbering compatibility; later folded into core numbering.
+Branch: `clean-core-v1`
 
-## Rules
+Runtime entry points:
 
-1. A named behavior/function has one authoritative implementation.
-2. No monkey-patching (`const oldX=X; X=function...`) in final architecture.
-3. No MutationObserver/polling for business behavior. DOM enhancement must be called by the renderer that owns the view.
-4. No reliance on browser-created globals from element IDs.
-5. State is accessed through one explicit state API; no split lexical `st` / `window.st` ownership.
-6. Finnish dates are `dd.mm.yyyy` in UI.
-7. Domestic VAT default 25.5%, export 0%; setup fee 50 €, billing fee 6 €, payment term 21 days.
-8. Work card and delivery note never contain prices.
-9. Workflow contract: Tarjous -> Vahvistettu -> Tuotannossa -> Valmis -> Laskutusvalmis -> Laskutettu.
+- `index.html`
+- `runtime/copyset-runtime.js`
+- `runtime/copyset-runtime.css`
 
-## Migration gates
+The HTML must load only the two runtime bundle files above. Their internal section order is intentional because the application is a browser-based IIFE system with shared `window.CopySet` APIs.
 
-### Gate A — remove duplicate controllers
-- Pricing only in `pricing.js`.
-- Invoice review only in `invoice-review.js`.
-- Order workflow only in `order-page.js`.
+## Behavioural contract
 
-### Gate B — extract shell and CSS
-Move inline CSS and static HTML out of `app-base.html` without changing behavior.
+The clean branch must preserve:
 
-### Gate C — extract state/data
-Move FLOW, product presets, demo seed data, persistence and shared normalization into explicit modules.
+- Tilaukset as the opening view
+- Tarjous → approved → order workflow
+- Vahvistettu → Tuotannossa → Valmis → Laskutusvalmis → Laskutettu
+- A4 order view in Vahvistettu and Valmis
+- editable production work card without prices
+- colour previews for Työkortti, Lähete and Lähetyslappu before printing
+- A4 invoice review
+- CRM, subcontractors, pricing, dashboard, archive and marketing views
+- ability to close or return from every workflow view
 
-### Gate D — extract forms/CRM
-Move `orderForm`, `fillCustomer`, `formOrderObject`, customer creation/search and `saveOrder` to canonical modules.
+## Change rule
 
-### Gate E — extract dashboard/secondary views
-Move dashboard, products, suppliers, marketing and archive renderers.
+Make changes in the appropriate marked section inside the runtime bundle. After every change:
 
-### Gate F — retire `app-base.html` — complete
-The compatibility monolith was replaced by the static `index.html` shell and canonical modules.
-
-## Merge requirement
-Do not merge this branch into `main` until the existing customer-visible flows are manually verified: create tarjous, create tilaus, pricing, customer creation, production start, work card, ready/shipping docs, invoice review/approval, invoiced view, copy order, search/filter, mobile form scrolling.
+1. Parse the complete JavaScript bundle.
+2. Confirm `index.html` has only the two runtime references.
+3. Deploy the clean branch.
+4. Verify Vercel reports `READY`.
+5. Exercise the affected workflow before promotion.
