@@ -28,10 +28,7 @@
   });
   scope.querySelectorAll?.('#marketing,#pricing').forEach(surface=>{surface.classList.add('copyset-form-layout');enhanceFields(surface)});
  }
- let queued=false;
- const queue=scope=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;enhance(scope||document)})};
- const observer=new MutationObserver(records=>{for(const record of records){if(record.addedNodes.length){queue(document);break}}});
- function start(){enhance(document);observer.observe(document.body,{childList:true,subtree:true})}
+ function start(){enhance(document)}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
  document.addEventListener('copyset:order-form-rendered',e=>enhance(e.detail?.root||document));
  document.addEventListener('copyset:clean-ready',()=>enhance(document));

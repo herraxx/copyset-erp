@@ -1,10 +1,12 @@
 # CopySet ERP — clean architecture
 
+Status 2026-09-18: Gate F is complete on `clean-runtime-2026-09-18`. The compatibility monolith has been retired; `index.html` loads only canonical modules.
+
 This branch is the structural-clean workspace. Production remains on `main` until each migration gate is verified.
 
 ## One owner per responsibility
 
-- `app-shell.html` — static application shell only: navigation, views, modals. No business logic.
+- `index.html` — static application shell only: navigation, views, modals and deterministic imports. No business logic.
 - `styles/base.css` — shared layout/forms/tables/modal styles.
 - `styles/documents.css` — work card, delivery note, labels, invoice preview.
 - `data.js` — demo seed data and persistence/state initialization only.
@@ -51,8 +53,8 @@ Move `orderForm`, `fillCustomer`, `formOrderObject`, customer creation/search an
 ### Gate E — extract dashboard/secondary views
 Move dashboard, products, suppliers, marketing and archive renderers.
 
-### Gate F — retire `app-base.html`
-Replace the 260 KB compatibility monolith with a small static shell that imports the canonical modules.
+### Gate F — retire `app-base.html` — complete
+The compatibility monolith was replaced by the static `index.html` shell and canonical modules.
 
 ## Merge requirement
 Do not merge this branch into `main` until the existing customer-visible flows are manually verified: create tarjous, create tilaus, pricing, customer creation, production start, work card, ready/shipping docs, invoice review/approval, invoiced view, copy order, search/filter, mobile form scrolling.
