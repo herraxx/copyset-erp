@@ -235,3 +235,37 @@
 .copyset-chart-row>strong{color:#29343d;white-space:nowrap}
 @media(max-width:1000px){.copyset-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.copyset-kpi.featured{grid-column:1/-1}.copyset-insight-grid{grid-template-columns:1fr}}
 @media(max-width:850px){.copyset-view-hero{align-items:stretch;flex-direction:column;padding:17px}.copyset-view-hero>.btn{width:100%}.copyset-summary-grid{grid-template-columns:1fr}.copyset-register-tools{align-items:stretch;flex-direction:column}.copyset-register-tools input{width:100%;font-size:16px}.copyset-register-table{padding:8px}.copyset-register-row{min-width:0!important;grid-template-columns:1fr!important;gap:7px;margin-bottom:8px;padding:13px;border:1px solid #dfe4e9;border-radius:11px}.copyset-register-head{display:none}.copyset-register-row>div:last-child .btn{width:100%;margin-top:5px}.copyset-periods{display:grid;grid-template-columns:repeat(2,1fr)}.copyset-date-range{align-items:stretch;flex-direction:column}.copyset-date-range label{min-width:0}.copyset-kpi-grid{grid-template-columns:1fr}.copyset-kpi.featured{grid-column:auto}.copyset-chart-row{grid-template-columns:25px minmax(90px,1fr) auto}.copyset-chart-track{grid-column:2/-1}}
+
+/* Readable unified Tarjoukset and Tilaukset tables */
+#quotes table,#orders table{width:100%;min-width:1080px;border-collapse:separate;border-spacing:0;table-layout:fixed}
+#quotes tbody tr,#orders tbody tr{height:66px;transition:background .14s,box-shadow .14s}
+#quotes tbody tr:nth-child(even),#orders tbody tr:nth-child(even){background:#fbfcfd}
+#quotes tbody tr:hover,#orders tbody tr:hover{background:#fff8f1!important;box-shadow:inset 4px 0 0 #f58a24}
+#quotes td,#orders td{padding:14px 13px!important;border-bottom:1px solid #e2e7eb!important;color:#29323a!important;font-size:13px!important;line-height:1.45!important}
+#quotes td b,#orders td b{font-weight:850}
+#quotes th,#orders th{height:42px!important;padding:11px 13px!important;color:#4f5b66!important;font-size:10px!important;font-weight:950!important}
+#orders th:nth-child(1),#orders td:nth-child(1){width:12%}
+#orders th:nth-child(2),#orders td:nth-child(2){width:10%}
+#orders th:nth-child(3),#orders td:nth-child(3){width:16%}
+#orders th:nth-child(4),#orders td:nth-child(4){width:25%}
+#orders th:nth-child(5),#orders td:nth-child(5){width:14%}
+#orders th:nth-child(6),#orders td:nth-child(6){width:23%}
+#quotes th:nth-child(1),#quotes td:nth-child(1){width:12%}
+#quotes th:nth-child(2),#quotes td:nth-child(2){width:9%}
+#quotes th:nth-child(3),#quotes td:nth-child(3){width:15%}
+#quotes th:nth-child(4),#quotes td:nth-child(4){width:19%}
+#quotes th:nth-child(5),#quotes td:nth-child(5){width:11%}
+#quotes th:nth-child(6),#quotes td:nth-child(6){width:10%}
+#quotes th:nth-child(7),#quotes td:nth-child(7){width:9%}
+#quotes th:nth-child(8),#quotes td:nth-child(8){width:15%}
+#orders .badge,#quotes .quote-stage{display:inline-flex;align-items:center;justify-content:center;min-height:28px;padding:6px 10px;font-size:10px!important;font-weight:900!important;white-space:nowrap}
+#orders .list-row-action{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;min-height:44px!important;margin:0!important;padding:9px 12px!important;border:1px solid #f58a24;border-radius:10px;font-size:12px!important;font-weight:900!important;text-align:center;white-space:nowrap;box-shadow:0 4px 12px rgba(245,138,36,.18)}
+#orders .list-row-action.done{border-color:#259650;background:linear-gradient(180deg,#35ad65,#259650);color:#fff;box-shadow:0 4px 12px rgba(37,150,80,.18)}
+#quotes .quote-actions{display:grid!important;gap:7px}
+#quotes .quote-actions .btn{width:100%!important;min-height:38px!important;margin:0!important;padding:8px 9px!important;border-radius:9px!important;font-size:11px!important;font-weight:850!important;white-space:normal}
+#quotes .list-note{padding:10px 13px!important;border:1px solid #e1e6ea!important;border-radius:9px!important;background:#f8fafb!important;color:#596570!important;font-size:12px!important}
+@media(max-width:850px){
+ #quotes table,#orders table{min-width:1000px}
+ #quotes td,#orders td{font-size:12px!important}
+ #orders .list-row-action{min-height:40px!important}
+}
