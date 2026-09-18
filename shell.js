@@ -7,6 +7,7 @@
  function renderAll(){root.renderQuotes?.();root.renderOrders?.();root.renderArchive?.();root.renderCRM?.();root.renderProducts?.();root.renderPricing?.();root.renderSuppliers?.();root.renderMarketing?.();root.renderDashboard?.()}window.renderAll=renderAll;
  document.querySelectorAll('.nav').forEach(b=>b.addEventListener('click',()=>show(b.dataset.v)));
  document.getElementById('modal')?.addEventListener('click',e=>{if(e.target.id==='modal')closeM()});
+ document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;document.getElementById('copyset-invoice-review')?.remove();if(document.getElementById('copyset-order-page'))window.copysetBackToOrders?.();closeM()});
  renderAll();show(location.hash.slice(1)||'orders');document.dispatchEvent(new CustomEvent('copyset:clean-ready'));
  root.shell=Object.freeze({show,renderAll,close:closeM});
 })();
