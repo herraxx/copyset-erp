@@ -30,3 +30,24 @@ body.ir-open{overflow:hidden}#copyset-invoice-review{position:fixed;inset:0;z-in
 @media(max-width:430px){.op-ready-summary{grid-template-columns:1fr 1fr}.op-ready-hero h1{font-size:19px}}
 
 .op-product-extras{display:flex;flex-wrap:wrap;gap:6px;padding:10px 13px;border-top:1px solid #e2e6e9;background:#fffaf5}.op-product-extras>small{width:100%;color:#8a5b31;font-size:8px;font-weight:950;letter-spacing:.09em}.op-product-extras>span{display:inline-flex;align-items:center;gap:8px;padding:6px 9px;border:1px solid #f2c79f;border-radius:99px;background:#fff;color:#874708;font-size:10px;font-weight:800}.op-product-extras b{color:#5a3a1e}
+
+/* Clean professional invoice review */
+.ir-main{display:flex;max-width:1060px;flex-direction:column;padding-top:18px}
+.ir-hero{order:1;margin-bottom:12px;padding:18px 20px;border-left:6px solid #f58a24;background:#fff}
+.ir-hero h1{font-size:22px}.ir-hero p{max-width:650px}
+.ir-draft-status{min-width:170px;padding:11px 14px;border:1px solid #f0c79f;border-radius:10px;background:#fff8f1;text-align:right}
+.ir-draft-status span{display:block;color:#c25b06;font-size:8px;font-weight:950;letter-spacing:.12em}
+.ir-draft-status b{display:block;margin:4px 0 2px;color:#303942;font-size:13px}
+.ir-draft-status small{color:#707b85;font-size:10px}
+.ir-info-grid{order:2;margin:0 0 12px;grid-template-columns:1.25fr .9fr 1.15fr}
+.ir-info-grid section{min-height:112px;padding:14px 16px;box-shadow:none}
+.ir-info-grid h3{font-size:14px}.ir-info-grid p{margin-top:5px}
+.ir-invoice-card{order:3;box-shadow:none}
+.ir-table-head{padding:10px 16px;background:#f1f4f6}
+.ir-product-row{padding:13px 16px}
+.ir-extra-row{padding:8px 16px 8px 34px;background:#fffaf5}
+.ir-totals{width:100%;margin:0;padding:13px 16px 16px 58%;border-top:1px solid #dde3e7;background:#fbfcfd}
+.ir-totals>div{padding:4px 0}
+.ir-totals .ir-grand{margin-top:7px;padding-top:10px;border-top:3px solid #f58a24}
+.ir-totals .ir-grand span,.ir-totals .ir-grand b{font-size:19px}
+@media(max-width:760px){.ir-main{padding-top:8px}.ir-hero{padding:14px;border-left-width:4px}.ir-draft-status{width:100%;min-width:0;text-align:left}.ir-info-grid{order:2}.ir-invoice-card{order:3}.ir-totals{padding:12px}.ir-totals .ir-grand span,.ir-totals .ir-grand b{font-size:17px}}
