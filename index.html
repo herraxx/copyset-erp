@@ -2,139 +2,49 @@
 <html lang="fi">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CopySet ERP</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#353535">
+  <title>Copy-Set ERP</title>
+  <link rel="stylesheet" href="/styles/base.css?v=clean70">
+  <link rel="stylesheet" href="/styles/documents.css?v=clean70">
+  <link rel="stylesheet" href="/styles/forms.css?v=clean70">
+  <link rel="stylesheet" href="/approved-layout.css?v=clean70">
+  <link rel="stylesheet" href="/order-page.css?v=clean70">
+  <link rel="stylesheet" href="/form-layout.css?v=clean70">
+  <link rel="stylesheet" href="/theme-polish.css?v=clean70">
+  <link rel="stylesheet" href="/mobile-layout.css?v=clean70">
+  <link rel="stylesheet" href="/final-ui.css?v=clean70">
 </head>
 <body>
-<script>
-(function bootstrapCopySet() {
-  const version = '20260917-final62';
-
-  const styles = [
-    'styles/base.css',
-    'styles/documents.css',
-    'styles/forms.css',
-    'approved-layout.css',
-    'order-page.css',
-    'form-layout.css',
-    'theme-polish.css',
-    'mobile-layout.css',
-    'final-ui.css'
-  ];
-
-  // Script order is intentional: configuration and state load before feature modules.
-  const scripts = [
-    'config.js',
-    'app-core.js',
-    'numbering-fix.js',
-    'customers.js',
-    'form-lifecycle.js',
-    'form-layout.js',
-    'customer-form.js',
-    'order-form-data.js',
-    'order-form-save.js',
-    'order-form-renderer.js',
-    'order-form-controller.js',
-    'quotes.js',
-    'quotes-list.js',
-    'orders-list.js',
-    'orders.js',
-    'pricing-admin.js',
-    'pricing.js',
-    'core-actions.js',
-    'invoice-review.js',
-    'confirmation.js',
-    'order-page.js',
-    'dashboard.js',
-    'archive.js',
-    'crm.js',
-    'secondary-views.js'
-  ];
-
-  const cleanBootstrap = `<script>
-(function activateCleanModules() {
-  if (!window.CopySet) return;
-
-  const renderers = [
-    ['renderQuotes', 'renderQuotes'],
-    ['renderOrders', 'renderOrders'],
-    ['renderDashboard', 'renderDashboard'],
-    ['renderArchive', 'renderArchive'],
-    ['renderCRM', 'renderCRM'],
-    ['renderProducts', 'renderProducts'],
-    ['renderSuppliers', 'renderSuppliers'],
-    ['renderMarketing', 'renderMarketing'],
-    ['renderPricing', 'renderPricing']
-  ];
-
-  renderers.forEach(([globalName, moduleName]) => {
-    const renderer = CopySet[moduleName];
-    if (typeof renderer !== 'function') return;
-    window[globalName] = renderer;
-    renderer();
-  });
-
-  if (CopySet.pricing && typeof CopySet.pricing.enhance === 'function') {
-    CopySet.pricing.enhance();
-  }
-
-  document.dispatchEvent(new CustomEvent('copyset:clean-ready'));
-})();
-<\/script>`;
-
-  const criticalUi = `<style id="copyset-final-critical">
-.main>.top{background:#353535!important;color:#fff!important;border-bottom-color:#484848!important}
-.main>.top h1,#title{color:#fff!important}
-#title .top-title-icon,.top-title-icon{display:none!important}
-.main>.top .small{color:#d5d9dc!important}
-#quotes>.list-shell,#orders>.list-shell{width:100%!important;padding:18px!important;border:1px solid #d8dee5!important;border-radius:16px!important;background:#fff!important;box-shadow:0 8px 28px rgba(28,35,43,.06)!important}
-#quotes .list-tools,#orders .list-tools{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:12px!important;margin:0 0 14px!important}
-#quotes .list-tools>input,#orders .list-tools>input{width:100%!important;min-width:0!important;min-height:44px!important;margin:0!important;padding:11px 14px!important;border:1px solid #cfd6de!important;border-radius:10px!important;background:#fbfcfd!important}
-#quotes .list-filters,#orders .list-filters{position:relative!important;display:grid!important;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))!important;width:100%!important;gap:8px!important;padding:25px 0 0!important;margin:0!important}
-#quotes .list-filters:before,#orders .list-filters:before{content:"RYHMÄT"!important;position:absolute!important;top:0!important;left:1px!important;color:#65707c!important;font-size:10px!important;font-weight:900!important;letter-spacing:.12em!important}
-#quotes .list-filter,#orders .list-filter{display:inline-flex!important;align-items:center!important;justify-content:space-between!important;width:100%!important;min-width:0!important;min-height:42px!important;margin:0!important;padding:9px 11px!important;border:1px solid #d6dce3!important;border-radius:10px!important;background:linear-gradient(180deg,#fff,#f8fafb)!important;color:#303942!important;font-size:11px!important;font-weight:800!important}
-#quotes .list-filter.on,#orders .list-filter.on{background:linear-gradient(135deg,#ff9635,#f58a24)!important;border-color:#f58a24!important;color:#fff!important;box-shadow:0 5px 14px rgba(245,138,36,.24)!important}
-#quotes .list-filter .count,#orders .list-filter .count{display:inline-grid!important;place-items:center!important;min-width:24px!important;height:22px!important;padding:0 7px!important;border-radius:999px!important;background:#edf1f4!important;color:#3f4851!important;font-size:10px!important}
-#quotes .list-filter.on .count,#orders .list-filter.on .count{background:rgba(255,255,255,.25)!important;color:#fff!important}
-#quotes .tablewrap,#orders .tablewrap{width:100%!important;border:1px solid #dfe4e9!important;border-radius:11px!important;background:#fff!important;overflow:auto!important}
-@media(max-width:850px){#quotes>.list-shell,#orders>.list-shell{padding:10px!important}#quotes .list-filters,#orders .list-filters{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
-</style>`;
-
-  const styleTags = styles
-    .map(path => `<link rel="stylesheet" href="/${path}?v=${version}">`)
-    .join('');
-
-  const scriptTags = scripts
-    .map(path => `<script src="/${path}?v=${version}"><\/script>`)
-    .join('');
-
-  const assets = styleTags + criticalUi + scriptTags + cleanBootstrap;
-
-  fetch(`/app-base.html?v=${version}`)
-    .then(response => {
-      if (!response.ok) throw new Error(`app-base ${response.status}`);
-      return response.text();
-    })
-    .then(html => {
-      // Retire the historical title-color controller before it can recreate
-      // the coloured icon and override the shared grey header.
-      html = html
-        .replace(/<style id="section-title-colors">[\s\S]*?<\/style>/i, '')
-        .replace(/<script id="section-title-colors-js">[\s\S]*?<\/script>/i, '');
-      const bodyEnd = html.toLowerCase().lastIndexOf('</body>');
-      const page = bodyEnd >= 0
-        ? html.slice(0, bodyEnd) + assets + html.slice(bodyEnd)
-        : html + assets;
-
-      document.open();
-      document.write(page);
-      document.close();
-    })
-    .catch(error => {
-      document.body.innerHTML =
-        `<div style="font-family:Arial;padding:30px">CopySet ERP loading error: ${error.message}</div>`;
-    });
-})();
-</script>
+  <div class="app"><aside class="side"><div class="sidebrand"><div class="logo">COPY<b>-SET</b></div><div class="sidetag">PRINT OS</div></div><div class="navgroup"><div class="navlabel">TYÖNKULKU</div><button class="nav" data-v="quotes"><span class="navicon">✦</span><span>Tarjoukset</span></button><button class="nav on" data-v="orders"><span class="navicon">▤</span><span>Tilaukset</span></button><button class="nav" data-v="archive"><span class="navicon">⌕</span><span>Arkisto / vanhat työt</span></button></div><div class="navgroup"><div class="navlabel">REKISTERIT</div><button class="nav" data-v="crm"><span class="navicon">👥</span><span>Asiakas CRM</span></button><button class="nav" data-v="products"><span class="navicon">▦</span><span>Tuotteet & hinnat</span></button><button class="nav" data-v="suppliers"><span class="navicon">▣</span><span>Alihankkijat</span></button></div><div class="navgroup"><div class="navlabel">TYÖKALUT</div><button class="nav" data-v="pricing"><span class="navicon">€</span><span>Hinnoittelu</span></button><button class="nav" data-v="marketing"><span class="navicon">✉</span><span>Markkinointi</span></button><button class="nav" data-v="dashboard"><span class="navicon">◫</span><span>Dashboard</span></button></div><div class="sidefoot"><span class="statusdot"></span> Demo käytössä</div></aside><main class="main"><header class="top"><div><h1 id="title">Tilaukset</h1><div class="small">Copy-Set ERP · asiakasdemo</div></div><div class="top-create-actions"><button class="btn top-quote" onclick="newOrder('Tarjous')">＋ Uusi tarjous</button><button class="btn orange top-order" onclick="newOrder('Tilaus')">＋ Uusi tilaus</button></div></header><div class="content"><section id="quotes" class="view"></section><section id="orders" class="view on"></section><section id="archive" class="view"></section><section id="crm" class="view"></section><section id="products" class="view"></section><section id="pricing" class="view"></section><section id="suppliers" class="view"></section><section id="marketing" class="view"></section><section id="dashboard" class="view"></section></div></main></div>
+  <div class="modal" id="modal"><div class="box"><div class="head"><h2 id="mt"></h2><button class="btn" onclick="closeM()">Sulje</button></div><div id="mb"></div></div></div>
+  <script src="/config.js?v=clean70"></script>
+  <script src="/data.js?v=clean70"></script>
+  <script src="/app-core.js?v=clean70"></script>
+  <script src="/numbering-fix.js?v=clean70"></script>
+  <script src="/customers.js?v=clean70"></script>
+  <script src="/form-lifecycle.js?v=clean70"></script>
+  <script src="/form-layout.js?v=clean70"></script>
+  <script src="/customer-form.js?v=clean70"></script>
+  <script src="/order-form-data.js?v=clean70"></script>
+  <script src="/order-form-save.js?v=clean70"></script>
+  <script src="/order-form-renderer.js?v=clean70"></script>
+  <script src="/order-form-controller.js?v=clean70"></script>
+  <script src="/quotes.js?v=clean70"></script>
+  <script src="/quote-actions.js?v=clean70"></script>
+  <script src="/quotes-list.js?v=clean70"></script>
+  <script src="/orders-list.js?v=clean70"></script>
+  <script src="/orders.js?v=clean70"></script>
+  <script src="/pricing-admin.js?v=clean70"></script>
+  <script src="/pricing.js?v=clean70"></script>
+  <script src="/core-actions.js?v=clean70"></script>
+  <script src="/invoice-review.js?v=clean70"></script>
+  <script src="/confirmation.js?v=clean70"></script>
+  <script src="/order-page.js?v=clean70"></script>
+  <script src="/dashboard.js?v=clean70"></script>
+  <script src="/archive.js?v=clean70"></script>
+  <script src="/crm.js?v=clean70"></script>
+  <script src="/secondary-views.js?v=clean70"></script>
+  <script src="/shell.js?v=clean70"></script>
 </body>
 </html>
