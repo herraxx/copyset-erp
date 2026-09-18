@@ -16,7 +16,7 @@
 .statusdot{display:inline-block;width:7px;height:7px;margin-right:7px;border-radius:50%;background:#35ba6e}
 .main{min-width:0!important;width:100%!important}
 .main>.top{position:sticky!important;top:0!important;z-index:18!important;display:flex!important;align-items:center!important;justify-content:flex-end!important;min-height:72px!important;padding:12px 22px!important;background:var(--shell)!important;border-bottom:1px solid var(--shell-line)!important}
-.visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.visually-hidden{display:none!important}
 .top-create-actions{position:static!important;left:auto!important;transform:none!important;display:flex!important;gap:10px!important;margin-left:auto!important}
 .top-create-actions .btn{min-width:132px!important;min-height:42px!important;padding:10px 16px!important;border-radius:10px!important;font-size:12px!important;font-weight:850!important}
 .top-create-actions .top-quote{background:#24ad61!important;border-color:#24ad61!important;color:#fff!important}
