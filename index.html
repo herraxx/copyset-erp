@@ -14,10 +14,31 @@
   <link rel="stylesheet" href="/theme-polish.css?v=clean70">
   <link rel="stylesheet" href="/mobile-layout.css?v=clean70">
   <link rel="stylesheet" href="/final-ui.css?v=clean70">
-  <link rel="stylesheet" href="/shell-layout.css?v=clean71">
+  <link rel="stylesheet" href="/shell-layout.css?v=clean72">
 </head>
 <body>
-  <div class="app"><aside class="side"><div class="sidebrand"><div class="logo">COPY<b>-SET</b></div><div class="sidetag">PRINT OS</div></div><div class="navgroup"><div class="navlabel">TYÖNKULKU</div><button class="nav" data-v="quotes">Tarjoukset</button><button class="nav on" data-v="orders">Tilaukset</button><button class="nav" data-v="archive">Arkisto / vanhat työt</button></div><div class="navgroup"><div class="navlabel">REKISTERIT</div><button class="nav" data-v="crm">Asiakas CRM</button><button class="nav" data-v="products">Tuotteet & hinnat</button><button class="nav" data-v="suppliers">Alihankkijat</button></div><div class="navgroup"><div class="navlabel">TYÖKALUT</div><button class="nav" data-v="pricing">Hinnoittelu</button><button class="nav" data-v="marketing">Markkinointi</button><button class="nav" data-v="dashboard">Dashboard</button></div><div class="sidefoot"><span class="statusdot"></span> Demo käytössä</div></aside><main class="main"><header class="top"><h1 id="title" class="visually-hidden">Tilaukset</h1><div class="top-create-actions"><button class="btn top-quote" onclick="newOrder('Tarjous')">Uusi tarjous</button><button class="btn orange top-order" onclick="newOrder('Tilaus')">Uusi tilaus</button></div></header><div class="content"><section id="quotes" class="view"></section><section id="orders" class="view on"></section><section id="archive" class="view"></section><section id="crm" class="view"></section><section id="products" class="view"></section><section id="pricing" class="view"></section><section id="suppliers" class="view"></section><section id="marketing" class="view"></section><section id="dashboard" class="view"></section></div></main></div>
+  <div class="app">
+    <aside class="side">
+      <div class="sidebrand"><div class="logo">COPY<b>-SET</b></div><div class="sidetag">PRINT OS</div></div>
+      <div class="navgroup"><div class="navlabel">TYÖNKULKU</div>
+        <button class="nav" data-v="quotes"><span class="navmark"><svg viewBox="0 0 24 24"><path d="M7 3h8l4 4v14H7zM15 3v5h5M10 13h6M10 17h4"/></svg></span><span>Tarjoukset</span></button>
+        <button class="nav on" data-v="orders"><span class="navmark"><svg viewBox="0 0 24 24"><path d="M3 4h2l2 11h11l2-8H6M9 19a1 1 0 1 0 0 2 1 1 0 0 0 0-2M17 19a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/></svg></span><span>Tilaukset</span></button>
+        <button class="nav" data-v="archive"><span class="navmark"><svg viewBox="0 0 24 24"><path d="M4 7h16v14H4zM3 3h18v4H3M9 11h6"/></svg></span><span>Arkisto / vanhat työt</span></button>
+      </div>
+      <div class="navgroup"><div class="navlabel">REKISTERIT</div>
+        <button class="nav" data-v="crm"><span class="navmark"><svg viewBox="0 0 24 24"><path d="M8 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8M2 21v-3a5 5 0 0 1 10 0v3M17 11a3 3 0 1 0 0-6M15 15a4 4 0 0 1 7 3v3"/></svg></span><span>Asiakas CRM</span></button>
+        <button class="nav" data-v="products"><span class="navmark"><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></span><span>Tuotteet & hinnat</span></button>
+        <button class="nav" data-v="suppliers"><span class="navmark"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4v18M12 10h7v11M8 9v2M8 14v2M15 13h2M15 17h2"/></svg></span><span>Alihankkijat</span></button>
+      </div>
+      <div class="navgroup"><div class="navlabel">TYÖKALUT</div>
+        <button class="nav" data-v="pricing"><span class="navmark"><svg viewBox="0 0 24 24"><path d="M18 6a7 7 0 1 0 0 12M4 10h10M4 14h9"/></svg></span><span>Hinnoittelu</span></button>
+        <button class="nav" data-v="marketing"><span class="navmark"><svg viewBox="0 0 24 24"><path d="M3 5h18v14H3zM3 7l9 7 9-7"/></svg></span><span>Markkinointi</span></button>
+        <button class="nav" data-v="dashboard"><span class="navmark"><svg viewBox="0 0 24 24"><path d="M4 20V10h4v10M10 20V4h4v16M16 20v-7h4v7"/></svg></span><span>Dashboard</span></button>
+      </div>
+      <div class="sidefoot"><span class="statusdot"></span> Demo käytössä</div>
+    </aside>
+    <main class="main"><header class="top"><h1 id="title" class="visually-hidden">Tilaukset</h1><div class="top-create-actions"><button class="btn top-view" data-top-v="quotes">Tarjoukset</button><button class="btn top-view on" data-top-v="orders">Tilaukset</button></div></header><div class="content"><section id="quotes" class="view"></section><section id="orders" class="view on"></section><section id="archive" class="view"></section><section id="crm" class="view"></section><section id="products" class="view"></section><section id="pricing" class="view"></section><section id="suppliers" class="view"></section><section id="marketing" class="view"></section><section id="dashboard" class="view"></section></div></main>
+  </div>
   <div class="modal" id="modal"><div class="box"><div class="head"><h2 id="mt"></h2><button class="btn" onclick="closeM()">Sulje</button></div><div id="mb"></div></div></div>
   <script src="/config.js?v=clean70"></script>
   <script src="/data.js?v=clean70"></script>
@@ -33,8 +54,8 @@
   <script src="/order-form-controller.js?v=clean70"></script>
   <script src="/quotes.js?v=clean70"></script>
   <script src="/quote-actions.js?v=clean70"></script>
-  <script src="/quotes-list.js?v=clean70"></script>
-  <script src="/orders-list.js?v=clean70"></script>
+  <script src="/quotes-list.js?v=clean72"></script>
+  <script src="/orders-list.js?v=clean72"></script>
   <script src="/orders.js?v=clean70"></script>
   <script src="/pricing-admin.js?v=clean70"></script>
   <script src="/pricing.js?v=clean70"></script>
@@ -46,6 +67,6 @@
   <script src="/archive.js?v=clean70"></script>
   <script src="/crm.js?v=clean70"></script>
   <script src="/secondary-views.js?v=clean70"></script>
-  <script src="/shell.js?v=clean70"></script>
+  <script src="/shell.js?v=clean72"></script>
 </body>
 </html>
