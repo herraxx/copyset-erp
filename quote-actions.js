@@ -25,12 +25,12 @@
    <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.72fr);gap:24px;margin-top:24px;align-items:start">
     <div class="doc-note"><b>Toimitus ja ehdot</b><br>Toimitustapa: ${esc(o.shipping||'—')}<br>${delivery.address?`Toimitusosoite: ${esc(delivery.address)}, ${esc(delivery.zip)} ${esc(delivery.city)}<br>`:''}Maksuehto: ${esc(o.paymentTerms||'21 pv')}<br>Hinnat alv 0 %, ellei toisin mainita.</div>
     <div style="border:1px solid #dfe3e8;border-radius:10px;padding:14px">
-     <div class="pricing-line"><span>Tuotteet ja lisätyöt</span><b>${money(ps.reduce((s,p)=>s+(Number(p.price)||0)+(Array.isArray(p.extras)?p.extras.reduce((a,x)=>a+(Number(x.price)||0),0):0),0))}</b></div>
-     <div class="pricing-line"><span>Aloituskustannus</span><b>${money(o.setupFee)}</b></div>
-     <div class="pricing-line"><span>Laskutuslisä</span><b>${money(o.billingFee)}</b></div>
-     ${Number(o.deliveryPrice)?`<div class="pricing-line"><span>Toimitus</span><b>${money(o.deliveryPrice)}</b></div>`:''}
-     <div class="pricing-line" style="border-top:1px solid #dfe3e8;padding-top:8px;margin-top:8px"><span>Yhteensä alv 0 %</span><b>${money(net)}</b></div>
-     <div class="pricing-line"><span>ALV ${String(vatRate).replace('.',',')} %</span><b>${money(vat)}</b></div>
+     <div class="pricing-line" style="display:flex;justify-content:space-between;gap:16px;margin:6px 0"><span>Tuotteet ja lisätyöt</span><b>${money(ps.reduce((s,p)=>s+(Number(p.price)||0)+(Array.isArray(p.extras)?p.extras.reduce((a,x)=>a+(Number(x.price)||0),0):0),0))}</b></div>
+     <div class="pricing-line" style="display:flex;justify-content:space-between;gap:16px;margin:6px 0"><span>Aloituskustannus</span><b>${money(o.setupFee)}</b></div>
+     <div class="pricing-line" style="display:flex;justify-content:space-between;gap:16px;margin:6px 0"><span>Laskutuslisä</span><b>${money(o.billingFee)}</b></div>
+     ${Number(o.deliveryPrice)?`<div class="pricing-line" style="display:flex;justify-content:space-between;gap:16px;margin:6px 0"><span>Toimitus</span><b>${money(o.deliveryPrice)}</b></div>`:''}
+     <div class="pricing-line" style="display:flex;justify-content:space-between;gap:16px;border-top:1px solid #dfe3e8;padding-top:8px;margin-top:8px"><span>Yhteensä alv 0 %</span><b>${money(net)}</b></div>
+     <div class="pricing-line" style="display:flex;justify-content:space-between;gap:16px;margin:6px 0"><span>ALV ${String(vatRate).replace('.',',')} %</span><b>${money(vat)}</b></div>
      <div style="display:flex;justify-content:space-between;gap:16px;margin-top:10px;padding-top:10px;border-top:3px solid #ef7f1a;font-size:18px"><span><b>Yhteensä</b></span><b>${money(gross)}</b></div>
     </div>
    </div>
