@@ -17,6 +17,13 @@ Runtime entry points:
 
 The HTML must load only the two runtime bundle files above. Their internal section order is intentional because the application is a browser-based IIFE system with shared `window.CopySet` APIs.
 
+Canonical product data:
+
+- `products[].extras[]` always uses `{ name, price }` objects.
+- Legacy string extras are normalized once at startup and before persistence.
+- Production editing may change task names, but must preserve the matching invoice price.
+- Empty extra-work rows are never persisted or rendered.
+
 ## Behavioural contract
 
 The clean branch must preserve:

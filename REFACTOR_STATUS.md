@@ -15,3 +15,11 @@ Completed on 2026-09-18:
 
 Recovery point: `locked-working-2026-09-18`
 Clean runtime branch: `clean-core-v1`
+
+Final cleanup on 2026-09-19:
+
+- Normalized legacy and demo `lisätyö` data to one `{ name, price }` schema.
+- Removed empty extra-work rows from persisted data during startup/save migration.
+- Preserved extra-work prices when the price-free production card is edited.
+- Bumped runtime cache keys so the corrected bundle loads immediately.
+- Removed the obsolete layout preview from the active branch.
