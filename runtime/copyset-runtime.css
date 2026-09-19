@@ -1321,3 +1321,29 @@ input:focus,select:focus,textarea:focus,.list-tools>input:focus{
  .side .nav{min-width:82px!important;font-size:9px!important}
  .op-workflow>div{flex-basis:105px!important;min-width:105px!important}
 }
+
+
+/* Mobile top navigation: all destinations visible, no horizontal scrolling */
+@media(max-width:850px){
+ .side{
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  align-items:stretch!important;
+  gap:5px!important;
+  overflow:visible!important;
+  overflow-x:hidden!important;
+ }
+ .side .nav{
+  width:100%!important;
+  min-width:0!important;
+  min-height:40px!important;
+  padding:7px 4px!important;
+  white-space:normal!important;
+  line-height:1.12!important;
+  text-align:center!important;
+ }
+}
+@media(max-width:520px){
+ .side{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+ .side .nav{min-width:0!important;font-size:9px!important}
+}
