@@ -1347,3 +1347,7 @@ input:focus,select:focus,textarea:focus,.list-tools>input:focus{
  .side{grid-template-columns:repeat(3,minmax(0,1fr))!important}
  .side .nav{min-width:0!important;font-size:9px!important}
 }
+
+
+/* Back navigation must return immediately to the saved list position. */
+html{scroll-behavior:auto!important}
