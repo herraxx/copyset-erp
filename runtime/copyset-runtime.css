@@ -184,9 +184,11 @@ body.ir-open{overflow:hidden}#copyset-invoice-review{position:fixed;inset:0;z-in
 .op-order-a4 .confgrid{display:grid;grid-template-columns:1fr 1fr;gap:12mm;margin:0 0 9mm;font-size:12px;line-height:1.55}
 .op-order-a4 .conflabel{margin-bottom:6px;color:#c65c05;font-size:9px;font-weight:950;letter-spacing:.12em}
 .op-order-a4 .confsection{margin:0 0 9mm}
-.op-order-a4 .conftable{width:100%;min-width:0!important;max-width:100%;border-collapse:collapse;table-layout:fixed}
+.op-order-a4 .conftable{width:100%;min-width:0!important;max-width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed;border-radius:10px;overflow:hidden}
 .op-order-a4 .conftable th,.op-order-a4 .conftable td{min-width:0;max-width:100%;padding:10px 9px;border-bottom:1px solid #dfe4e8;text-align:left;vertical-align:top;font-size:11px;white-space:normal;overflow-wrap:anywhere}
 .op-order-a4 .conftable th{background:#f1f4f6;color:#56616b;font-size:9px;letter-spacing:.07em}
+.op-order-a4 .conftable th:first-child{border-top-left-radius:10px}
+.op-order-a4 .conftable th:last-child{border-top-right-radius:10px}
 .op-order-a4 .conftable th:nth-child(2),.op-order-a4 .conftable td:nth-child(2){width:25%}
 .op-order-a4 .conftable th:last-child,.op-order-a4 .conftable td:last-child{width:25%;text-align:right}
 .op-order-a4 .conf-extra td{padding-top:7px;padding-bottom:7px;background:#fff9f3;color:#80440d}
