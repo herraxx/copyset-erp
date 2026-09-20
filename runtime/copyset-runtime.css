@@ -1028,4 +1028,74 @@ input:focus,select:focus,textarea:focus,.list-tools>input:focus{
  .side::-webkit-scrollbar{display:none}
  .sidebrand,.sidefoot,.navlabel{display:none!important}
  .navgroup{display:contents!important;margin:0!important}
- .side .nav{flex:0 0 auto!important;width:auto!important;min-width:108px!important;min-height:42px!important;margin:0!important;padding:9px 11px!important;justify-content:center!important;text-align:center!important;white
+ .side .nav{flex:0 0 auto!important;width:auto!important;min-width:108px!important;min-height:42px!important;margin:0!important;padding:9px 11px!important;justify-content:center!important;text-align:center!important;white-space:nowrap!important;font-size:10px!important}
+ .navmark{display:none!important}
+ .main>.top{position:relative!important;min-height:58px!important;padding:8px!important}
+ .top-create-actions{position:static!important;left:auto!important;transform:none!important;display:grid!important;grid-template-columns:1fr 1fr!important;width:100%!important;gap:7px!important}
+ .top-create-actions .btn{width:100%!important;min-width:0!important;min-height:44px!important;padding:9px 7px!important;font-size:11px!important}
+}
+
+/* Canonical mobile contract. Keep this last so desktop table rules cannot override it. */
+@media(max-width:850px){
+ html,body{width:100%!important;max-width:100%!important;overflow-x:hidden!important}
+ body{font-size:14px!important;-webkit-text-size-adjust:100%}
+ *,*::before,*::after{box-sizing:border-box}
+ .app,.main,.content,.view{width:100%!important;max-width:100%!important;min-width:0!important}
+ .content{padding:8px!important}
+
+ /* All navigation destinations remain visible without a hidden horizontal strip. */
+ .side{position:sticky!important;top:0!important;z-index:60!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;width:100%!important;max-width:100vw!important;height:auto!important;padding:6px!important;gap:5px!important;overflow:hidden!important}
+ .sidebrand,.sidefoot,.navlabel{display:none!important}
+ .navgroup{display:contents!important}
+ .side .nav{width:100%!important;min-width:0!important;min-height:42px!important;margin:0!important;padding:7px 4px!important;white-space:normal!important;line-height:1.12!important;text-align:center!important;font-size:9px!important}
+
+ .main>.top{position:relative!important;min-height:auto!important;padding:8px!important}
+ .top-create-actions{position:static!important;left:auto!important;transform:none!important;display:grid!important;grid-template-columns:1fr 1fr!important;width:100%!important;gap:7px!important}
+ .top-create-actions .btn{width:100%!important;min-width:0!important;min-height:46px!important;font-size:11px!important}
+
+ /* Offers and orders are readable cards, never a 1000 px desktop table. */
+ #quotes .tablewrap,#orders .tablewrap{width:100%!important;overflow:visible!important}
+ #quotes table,#orders table{display:block!important;width:100%!important;min-width:0!important;table-layout:auto!important;border:0!important;background:transparent!important}
+ #quotes thead,#orders thead{display:none!important}
+ #quotes tbody,#orders tbody{display:grid!important;grid-template-columns:1fr!important;gap:10px!important}
+ #quotes tbody tr,#orders tbody tr{display:block!important;width:100%!important;height:auto!important;margin:0!important;overflow:hidden!important;border:1px solid #dce2e7!important;border-radius:12px!important;background:#fff!important;box-shadow:0 4px 14px rgba(31,39,46,.06)!important}
+ #quotes td,#orders td{display:grid!important;grid-template-columns:88px minmax(0,1fr)!important;align-items:start!important;gap:8px!important;width:100%!important;min-width:0!important;padding:9px 10px!important;border:0!important;border-bottom:1px solid #edf0f2!important;font-size:12px!important;line-height:1.35!important;white-space:normal!important;overflow-wrap:anywhere!important}
+ #quotes td:last-child,#orders td:last-child{border-bottom:0!important}
+ #quotes td::before,#orders td::before{color:#727d87;font-size:9px;font-weight:950;letter-spacing:.06em;text-transform:uppercase}
+ #orders td:nth-child(1)::before{content:"Tilaus"}#orders td:nth-child(2)::before{content:"Deadline"}#orders td:nth-child(3)::before{content:"Asiakas"}#orders td:nth-child(4)::before{content:"Tuotteet"}#orders td:nth-child(5)::before{content:"Status"}#orders td:nth-child(6)::before{content:"Seuraava vaihe"}
+ #quotes td:nth-child(1)::before{content:"Tarjous"}#quotes td:nth-child(2)::before{content:"Päiväys"}#quotes td:nth-child(3)::before{content:"Asiakas"}#quotes td:nth-child(4)::before{content:"Tuote"}#quotes td:nth-child(5)::before{content:"Summa"}#quotes td:nth-child(6)::before{content:"Tila"}#quotes td:nth-child(7)::before{content:"Myyjä"}#quotes td:nth-child(8)::before{content:"Toiminnot"}
+ #orders td:nth-child(n),#quotes td:nth-child(n){width:100%!important}
+ #orders .list-row-action,#quotes .quote-actions .btn{width:100%!important;min-height:44px!important}
+ .list-filters{display:flex!important;gap:7px!important;overflow-x:auto!important;padding-bottom:4px!important;scrollbar-width:none}
+ .list-filter{flex:0 0 auto!important;min-height:40px!important}
+
+ /* Forms and dialogs fit the phone and preserve a visible close/back control. */
+ .form,.cards,.marketing,.metrics,.pricegrid,.products,.mini,.contactrow,.methods,.doc-grid,.op-info,.ir-info-grid,.workorder-meta,.workorder-grid{grid-template-columns:1fr!important}
+ input,select,textarea{min-height:44px!important;max-width:100%!important;font-size:16px!important}
+ .modal{padding:0!important;overflow-y:auto!important}
+ .modal .box,.modal>.box{width:100%!important;max-width:100%!important;min-height:100dvh!important;margin:0!important;padding:12px!important;border-radius:0!important;overflow:visible!important}
+ .modal .head{position:sticky!important;top:-12px!important;z-index:20!important;margin:-12px -12px 12px!important;padding:12px!important;background:#fff!important}
+
+ /* Order, invoice and all A4 previews scale to the viewport without sideways scrolling. */
+ #copyset-order-page,#copyset-invoice-review{width:100%!important;max-width:100%!important;overflow-x:hidden!important}
+ .op-top,.ir-top{position:sticky!important;top:0!important;z-index:55!important;display:grid!important;grid-template-columns:auto minmax(0,1fr)!important;gap:8px!important;padding:8px!important}
+ .op-top>em,.ir-top>em{display:none!important}
+ .op-main{width:100%!important;max-width:100%!important;padding:8px 7px 110px!important}
+ .op-workflow{display:flex!important;gap:6px!important;width:100%!important;overflow-x:auto!important;padding:8px!important}
+ .op-workflow>div{flex:0 0 108px!important;min-width:108px!important;font-size:9px!important}
+ .op-order-a4,.doc-preview,.doc-preview .doc-paper,.standalone-a4,#copyset-invoice-review .ir-main{width:100%!important;max-width:100%!important;min-width:0!important;min-height:0!important;margin:6px auto!important;padding:13px!important;overflow-x:hidden!important;box-shadow:0 5px 18px rgba(27,35,43,.13)!important}
+ .confirmdoc,.confirmdoc>*{max-width:100%!important;min-width:0!important}
+ .confirmdoc .confhead{align-items:flex-start!important;flex-direction:column!important;gap:8px!important}
+ .confirmdoc .conftitle{text-align:left!important}
+ .confirmdoc .confgrid{grid-template-columns:1fr!important;gap:14px!important}
+ .confirmdoc .conftable{width:100%!important;min-width:0!important;table-layout:fixed!important}
+ .confirmdoc .conftable th,.confirmdoc .conftable td{padding:8px 5px!important;font-size:10px!important;overflow-wrap:anywhere!important}
+ .confirmdoc .confprice{width:100%!important}
+ .op-actions,.ir-actions{position:fixed!important;right:0!important;bottom:0!important;left:0!important;z-index:70!important;width:100%!important;padding:8px 8px calc(8px + env(safe-area-inset-bottom))!important;background:rgba(255,255,255,.98)!important}
+ .op-actions .op-primary,.ir-actions .ir-approve{width:100%!important;min-width:0!important;min-height:48px!important}
+}
+
+@media(max-width:360px){
+ #quotes td,#orders td{grid-template-columns:1fr!important;gap:3px!important}
+ .side .nav{font-size:8px!important}
+}
