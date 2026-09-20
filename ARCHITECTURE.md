@@ -1,9 +1,12 @@
 # CopySet ERP — locked clean architecture
 
-## Protected baseline
+## Protected baselines
 
 The exact pre-cleanup application is preserved on branch `locked-working-2026-09-18`.
 Never rewrite or force-update that branch.
+
+The final working prototype before the v1.0 handover pass is preserved on branch
+`backup/copyset-v1-working-2026-09-20`.
 
 ## Active clean branch
 
@@ -47,3 +50,9 @@ Make changes in the appropriate marked section inside the runtime bundle. After 
 3. Deploy the clean branch.
 4. Verify Vercel reports `READY`.
 5. Exercise the affected workflow before promotion.
+
+## Release validation
+
+Run `node scripts/validate.mjs` before every deployment. The release validator checks
+the complete runtime bundles and prevents truncated CSS, duplicate runtime references
+and missing workflow contracts from being published unnoticed.

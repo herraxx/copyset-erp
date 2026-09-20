@@ -23,3 +23,12 @@ Final cleanup on 2026-09-19:
 - Preserved extra-work prices when the price-free production card is edited.
 - Bumped runtime cache keys so the corrected bundle loads immediately.
 - Removed the obsolete layout preview from the active branch.
+
+Handover pass on 2026-09-20:
+
+- Preserved the working application on `backup/copyset-v1-working-2026-09-20`.
+- Restored and hardened the canonical mobile stylesheet.
+- Added automated release validation.
+- Added README, acceptance test plan, changelog and customer handover instructions.
+- Classified v1.0 accurately as a front-end prototype pending database, authentication,
+  durable file storage, backups and production integrations.
