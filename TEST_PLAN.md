@@ -33,6 +33,8 @@ The command checks JavaScript syntax, CSS integrity, runtime references, require
 7. Open `Käteiskuitti`, select each payment method and verify the A4 receipt. Confirm that printing a receipt does not change the order status.
 8. Move to invoice review and approve the invoice.
 9. Verify the final status is `Laskutettu` and no confirmation button is shown.
+10. Reopen one order in each completed state: `Valmis`, `Laskutusvalmis` and `Laskutettu`.
+11. Verify `Käteiskuitti` remains available in all three states and printing it does not change the order status.
 
 ### Navigation and persistence
 
