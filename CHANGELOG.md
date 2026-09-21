@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.2 — 2026-09-21
+
+- `Käteiskuitti` is available in `Valmis`, `Laskutusvalmis` and `Laskutettu` order views.
+- Asset cache version updated so browsers load the corrected workflow immediately.
+
 ## 1.0.1 — 2026-09-21
 
 - added printable A4 `Käteiskuitti` with cash, card and MobilePay payment methods
