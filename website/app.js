@@ -25,7 +25,7 @@ function renderCart(){cartItems.innerHTML=cart.length?cart.map((x,i)=>`<div clas
 function removeCart(i){cart.splice(i,1);saveCart();renderCart()}
 function openQuote(){closePanel();quoteModal.classList.add('on');quoteModal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'}
 function startCheckout(){closePanel();openQuote();const ta=quoteModal.querySelector('textarea');ta.value='Tarjouskorin tuotteet:\n'+cart.map(x=>`• ${x.name}, ${x.qty} kpl, ${x.size}, ${x.material}, ${x.finish}`).join('\n')}
-function submitQuote(e){e.preventDefault();closePanel();toastMsg('Kiitos! Tarjouspyyntö on valmis lähetettäväksi.');e.target.reset()}
+function submitQuote(e){e.preventDefault();const data=new FormData(e.target);const subject=encodeURIComponent('Tarjouspyyntö verkkosivulta');const body=encodeURIComponent(`Nimi / yritys: ${data.get('name')}\nSähköposti: ${data.get('email')}\nPuhelin: ${data.get('phone')||'—'}\n\n${data.get('message')}`);window.location.href=`mailto:copy-set@copy-set.fi?subject=${subject}&body=${body}`;closePanel();toastMsg('Tarjouspyyntö avattiin sähköpostiin.');e.target.reset()}
 function toastMsg(msg){toast.textContent=msg;toast.classList.add('on');setTimeout(()=>toast.classList.remove('on'),2800)}
 function toggleMenu(){mobileNav.classList.toggle('on')}
 renderProducts();saveCart();
