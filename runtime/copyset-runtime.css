@@ -227,7 +227,7 @@ body.ir-open{overflow:hidden}#copyset-invoice-review{position:fixed;inset:0;z-in
 }
 
 /* Shared modal frame */
-#modal.modal{background:rgba(27,31,35,.58);backdrop-filter:blur(2px);padding:28px 18px}
+#modal.modal{z-index:200000;background:rgba(27,31,35,.58);backdrop-filter:blur(2px);padding:28px 18px}
 #modal.modal.on{align-items:flex-start}
 #modal>.box{width:min(1120px,100%);padding:0;border:1px solid rgba(255,255,255,.35);border-radius:16px;overflow:hidden;box-shadow:0 28px 80px rgba(14,20,26,.28)}
 #modal>.box>.head{min-height:68px;padding:15px 20px;background:var(--form-charcoal);color:#fff;border:0}
