@@ -8,7 +8,7 @@
   <title>Copy-Set | Painotuotteet helposti verkosta</title>
   <link rel="preconnect" href="https://www.copy-set.fi">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23255f6b'/%3E%3Cpath d='M16 17h24l8 8v22H16z' fill='white'/%3E%3Cpath d='M40 17v9h8M23 32h18M23 39h13' fill='none' stroke='%23ed5013' stroke-width='4'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="/website/styles.css">
 </head>
 <body>
   <div class="utility"><div class="wrap"><span>Nopea palvelu · oma tuotanto Helsingissä</span><div><a href="tel:+35898770570">09 877 0570</a><a href="mailto:copy-set@copy-set.fi">copy-set@copy-set.fi</a><button class="lang active">FI</button><button class="lang">SV</button><button class="lang">EN</button></div></div></div>
@@ -63,6 +63,6 @@
   <aside class="panel cart-panel" id="cartPanel" aria-hidden="true"><button class="panel-close" onclick="closePanel()" aria-label="Sulje">×</button><p class="eyebrow orange">VERKKOKAUPPA</p><h2>Ostoskori</h2><div id="cartItems"></div><div class="cart-footer"><button class="primary full" id="checkoutButton" onclick="startCheckout()">Jatka yhteystietoihin</button><p>Tilauksen lähettäminen ei vielä sido sinua. Vahvistamme hinnan ja toimitusajan.</p></div></aside>
   <div class="modal" id="quoteModal" aria-hidden="true"><div class="modal-card"><button class="panel-close" onclick="closePanel()" aria-label="Sulje">×</button><p class="eyebrow orange">TARJOUSPYYNTÖ</p><h2>Kerro mitä tarvitset</h2><form onsubmit="submitQuote(event)"><label>Nimi / yritys<input required name="name"></label><label>Sähköposti<input required type="email" name="email"></label><label>Puhelin<input name="phone"></label><label>Mitä haluat painattaa?<textarea required name="message" rows="4"></textarea></label><button class="primary full" type="submit">Lähetä tarjouspyyntö</button></form></div></div>
   <div class="toast" id="toast" role="status"></div>
-  <script src="app.js"></script>
+  <script src="/website/app.js"></script>
 </body>
 </html>
