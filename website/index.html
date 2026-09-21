@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#255f6b">
+  <meta name="description" content="Copy-Set – vastuullinen painotalo Helsingissä. Tilaa suosituimmat painotuotteet helposti verkosta.">
+  <title>Copy-Set | Painotuotteet helposti verkosta</title>
+  <link rel="preconnect" href="https://www.copy-set.fi">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23255f6b'/%3E%3Cpath d='M16 17h24l8 8v22H16z' fill='white'/%3E%3Cpath d='M40 17v9h8M23 32h18M23 39h13' fill='none' stroke='%23ed5013' stroke-width='4'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="utility"><div class="wrap"><span>Nopea palvelu · oma tuotanto Helsingissä</span><div><a href="tel:+35898770570">09 877 0570</a><a href="mailto:copy-set@copy-set.fi">copy-set@copy-set.fi</a><button class="lang active">FI</button><button class="lang">SV</button><button class="lang">EN</button></div></div></div>
+  <header class="header">
+    <div class="wrap navrow">
+      <a class="brand" href="#top" aria-label="Copy-Set etusivu"><img src="https://www.copy-set.fi/media/images/cache/copy-set-logo-vektori-pelkka-logo-600x9999.png" alt="Copy-Set"></a>
+      <nav aria-label="Päävalikko"><a href="#products">Painotuotteet</a><a href="#services">Palvelut</a><a href="#how">Näin tilaat</a><a href="#contact">Yhteystiedot</a></nav>
+      <div class="nav-actions"><button class="search" aria-label="Hae tuotteita" onclick="focusSearch()">⌕ <span>Hae</span></button><button class="cart-button" onclick="openCart()">Ostoskori <b id="cartCount">0</b></button><button class="menu" onclick="toggleMenu()" aria-label="Avaa valikko">☰</button></div>
+    </div>
+    <div class="mobile-nav" id="mobileNav"><a href="#products">Painotuotteet</a><a href="#services">Palvelut</a><a href="#how">Näin tilaat</a><a href="#contact">Yhteystiedot</a></div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-media" role="img" aria-label="Copy-Set painotuotteita"></div>
+      <div class="wrap hero-content">
+        <p class="eyebrow">VASTUULLINEN PAINOTALO · HELSINKI</p>
+        <h1>Tee painava<br><em>vaikutus.</em></h1>
+        <p>Laadukkaat painotuotteet pieniin ja suuriin tarpeisiin. Valitse tuote, määritä vaihtoehdot ja lähetä aineisto – me tarkistamme loput.</p>
+        <div class="hero-actions"><a class="primary" href="#products">Valitse painotuote</a><button class="secondary" onclick="openQuote()">Pyydä tarjous</button></div>
+        <div class="hero-trust"><span>✓ Yli 30 vuoden kokemus</span><span>✓ Aineiston tarkistus</span><span>✓ Toimitus koko Suomeen</span></div>
+      </div>
+    </section>
+
+    <section class="product-section" id="products">
+      <div class="wrap">
+        <div class="section-head"><div><p class="eyebrow orange">SUOSITUIMMAT</p><h2>Valitse tuote – kaikki tiedot yhdellä klikkauksella</h2></div><label class="product-search"><span>⌕</span><input id="productSearch" placeholder="Hae tuotetta" oninput="filterProducts()"></label></div>
+        <div class="product-grid" id="productGrid"></div>
+        <div class="not-found" id="notFound" hidden>Tuotetta ei löytynyt. <button onclick="openQuote()">Pyydä räätälöity tarjous →</button></div>
+      </div>
+    </section>
+
+    <section class="fast-track">
+      <div class="wrap fast-grid"><div><p class="eyebrow">FAST TRACK</p><h2>Tarvitsetko painotuotteet jo tänään?</h2><p>Kun aineisto ja tilaus saapuvat aamulla klo 10 mennessä, monet tuotteet voidaan valmistaa saman päivän aikana.</p></div><a class="light-button" href="tel:+35898770570">Soita 09 877 0570</a></div>
+    </section>
+
+    <section class="services" id="services">
+      <div class="wrap"><div class="section-head"><div><p class="eyebrow orange">KAIKKI SAMASTA PAIKASTA</p><h2>Ideasta valmiiksi painotuotteeksi</h2></div><p class="intro">Henkilökohtainen palvelu kulkee mukana suunnittelusta toimitukseen. Jos et löydä valmista vaihtoehtoa, toteutamme sen sinulle.</p></div>
+        <div class="service-grid"><article><b>01</b><h3>Suunnittelu</h3><p>Tarvittaessa luomme näyttävän, painovalmiin aineiston.</p></article><article><b>02</b><h3>Painaminen</h3><p>Moderni tekniikka takaa tarkan ja laadukkaan lopputuloksen.</p></article><article><b>03</b><h3>Viimeistely</h3><p>Taitto, laminointi, stanssaus ja muut viimeistelyt.</p></article><article><b>04</b><h3>Toimitus</h3><p>Nouto Helsingistä tai toimitus haluamaasi osoitteeseen.</p></article></div>
+      </div>
+    </section>
+
+    <section class="how" id="how"><div class="wrap"><div class="how-copy"><p class="eyebrow orange">HELPPO TILATA</p><h2>Valmis neljässä vaiheessa</h2><p>Et tarvitse painoalan sanastoa. Valitse se minkä tiedät – autamme lopuissa.</p><button class="primary" onclick="document.querySelector('#products').scrollIntoView({behavior:'smooth'})">Aloita tilaus</button></div><ol><li><b>1</b><div><h3>Valitse tuote</h3><p>Tuotteen tärkeimmät vaihtoehdot avautuvat heti.</p></div></li><li><b>2</b><div><h3>Määritä määrä ja ominaisuudet</h3><p>Valitse koko, materiaali ja viimeistely.</p></div></li><li><b>3</b><div><h3>Lisää aineisto</h3><p>Lähetä PDF nyt tai myöhemmin sähköpostilla.</p></div></li><li><b>4</b><div><h3>Me tarkistamme</h3><p>Varmistamme painokelpoisuuden ennen tuotantoa.</p></div></li></ol></div></section>
+
+    <section class="about"><div class="wrap about-grid"><div class="about-image"></div><div><p class="eyebrow orange">COPY-SET VUODESTA 1989</p><h2>Se luotettu painotalo.</h2><p>Copy-Set on helsinkiläinen painotalo, joka palvelee kaikkialle Suomeen yli 30 vuoden kokemuksella. Meidän kanssamme tiedät aina, kenen kanssa asioit.</p><p>Ympäristövastuu kulkee mukana materiaalivalinnoista hävikin vähentämiseen, kierrätykseen ja uusiokäyttöön.</p><button class="text-link" onclick="openQuote()">Kerro ideastasi →</button></div></div></section>
+  </main>
+
+  <footer id="contact"><div class="wrap footer-grid"><div class="footer-brand"><img src="https://www.copy-set.fi/media/images/cache/copy-set-logo-vektori-pelkka-logo-600x9999.png" alt="Copy-Set"><p>Ensiluokkaista painopalvelua jokaiseen tarpeeseen.</p></div><div><h3>Ota yhteyttä</h3><a href="tel:+35898770570">09 877 0570</a><a href="mailto:copy-set@copy-set.fi">copy-set@copy-set.fi</a><p>Ma–Pe 08:00–16:00</p></div><div><h3>Käyntiosoite</h3><p>Copy-Set Oy<br>Asemapäällikönkatu 12 B 5<br>00520 Helsinki</p></div><div><h3>Pikalinkit</h3><a href="#products">Painotuotteet</a><a href="#how">Näin tilaat</a><a href="#contact">Aineisto-ohjeet</a></div></div><div class="wrap footer-bottom"><span>© 2026 Copy-Set Oy</span><span>Vastuullisesti painettu Helsingissä.</span></div></footer>
+
+  <div class="overlay" id="overlay" onclick="closePanels(event)"></div>
+  <aside class="panel product-panel" id="productPanel" aria-hidden="true"><button class="panel-close" onclick="closePanel()" aria-label="Sulje">×</button><div id="productDetail"></div></aside>
+  <aside class="panel cart-panel" id="cartPanel" aria-hidden="true"><button class="panel-close" onclick="closePanel()" aria-label="Sulje">×</button><p class="eyebrow orange">VERKKOKAUPPA</p><h2>Ostoskori</h2><div id="cartItems"></div><div class="cart-footer"><button class="primary full" id="checkoutButton" onclick="startCheckout()">Jatka yhteystietoihin</button><p>Tilauksen lähettäminen ei vielä sido sinua. Vahvistamme hinnan ja toimitusajan.</p></div></aside>
+  <div class="modal" id="quoteModal" aria-hidden="true"><div class="modal-card"><button class="panel-close" onclick="closePanel()" aria-label="Sulje">×</button><p class="eyebrow orange">TARJOUSPYYNTÖ</p><h2>Kerro mitä tarvitset</h2><form onsubmit="submitQuote(event)"><label>Nimi / yritys<input required name="name"></label><label>Sähköposti<input required type="email" name="email"></label><label>Puhelin<input name="phone"></label><label>Mitä haluat painattaa?<textarea required name="message" rows="4"></textarea></label><button class="primary full" type="submit">Lähetä tarjouspyyntö</button></form></div></div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
