@@ -30,8 +30,9 @@ The command checks JavaScript syntax, CSS integrity, runtime references, require
 4. Print `Työkortti`; verify no prices are shown.
 5. Mark production ready.
 6. Open `Lähete` and `Lähetyslappu`.
-7. Move to invoice review and approve the invoice.
-8. Verify the final status is `Laskutettu` and no confirmation button is shown.
+7. Open `Käteiskuitti`, select each payment method and verify the A4 receipt. Confirm that printing a receipt does not change the order status.
+8. Move to invoice review and approve the invoice.
+9. Verify the final status is `Laskutettu` and no confirmation button is shown.
 
 ### Navigation and persistence
 
@@ -51,3 +52,4 @@ Test at 360, 390, 430, 768 and 1366 pixel widths:
 - A4 previews fit the viewport on screen
 - printed documents remain physical A4
 - fixed action bars do not cover content
+- document status labels never cover the logo or title
