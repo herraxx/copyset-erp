@@ -23,7 +23,7 @@ const styleRefs = [...html.matchAll(/<link[^>]+href="([^"]+\.css[^\"]*)"/g)].map
 if (scriptRefs.length !== 1 || !scriptRefs[0].startsWith('/runtime/copyset-runtime.js')) fail('index.html must load exactly one runtime JavaScript bundle.');
 if (styleRefs.length !== 1 || !styleRefs[0].startsWith('/runtime/copyset-runtime.css')) fail('index.html must load exactly one runtime CSS bundle.');
 
-for (const required of ['Tarjous', 'Tilaus', 'Vahvistettu', 'Tuotannossa', 'Valmis', 'Laskutusvalmis', 'Laskutettu', 'TILAUSVAHVISTUS', 'Työkortti', 'Lähete', 'Lähetyslappu']) {
+for (const required of ['Tarjous', 'Tilaus', 'Vahvistettu', 'Tuotannossa', 'Valmis', 'Laskutusvalmis', 'Laskutettu', 'TILAUSVAHVISTUS', 'Työkortti', 'Lähete', 'Lähetyslappu', 'Käteiskuitti']) {
   if (!js.includes(required)) fail(`Required workflow label is missing: ${required}`);
 }
 
